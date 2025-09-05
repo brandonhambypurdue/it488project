@@ -1,0 +1,559 @@
+.mainPage {
+
+width: 100%;
+max-height: 100vh ;
+background-color:rgb(0, 154, 238);
+}
+.btn-group {
+  position: relative;
+  left: 7vw;
+  top: 3vw;
+  width: 30vw;
+
+  
+
+}
+.btn {
+  background-color: rgb(255, 255, 255);;
+    color:black;
+    border: .22vh solid;
+    border-color: rgb(8, 218, 229);
+    border-radius: 1vw;
+}
+
+
+/****/
+
+.dropbtn {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  width: 7vw;
+  height: 1.75vw;
+  border: .22vh solid rgb(8,218,229);
+  border-radius: 1vw;
+  position: relative;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+    left: 42.5vw;
+    top: 3.25vw;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  width: 8vw;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 1vw;
+  overflow: auto;
+  padding-left: 1vh;
+
+}
+
+/* Links inside the dropdown */
+.dropdown-content button {
+  color: black;
+  width: 7vw;
+  height: 2vw;
+  text-decoration: none;
+  display: block;
+  border-radius: 1vw;
+}
+
+.dropdown-content span{
+  color: black;
+  width: 7vw;
+  height: 1.75vw;
+  text-decoration: none;
+  display: block;
+  padding-top: 1vh;
+  padding-bottom: .25vh;
+  text-decoration: underline;
+}
+
+
+/* Change color of dropdown links on hover */
+.dropdown-content button:hover {background-color: rgb(0, 154, 238);}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;
+  text-align: center;
+}
+
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: rgb(0, 154, 238);}
+
+
+
+
+
+  /****/
+
+
+
+
+.welcome {
+  position: relative;
+  left: 5vw;
+  text-align: center;
+  color:white;
+  padding-top: 1vw;
+  width: 25vw;
+  height: 2.5vw;
+  
+  
+
+}
+/*This is for the square that has all the week days, weeks, and months*/
+.calendarHolder {
+  display: block;
+  background-color: white;;
+  width: 30vw;
+  height: 25vw;
+  position: relative;
+  top: 4.5vw;
+  left: 7vw;
+  border: solid rgb(8, 218, 229);
+  border-radius: 1vw;
+}
+
+.weekDaysHolder {
+  position: relative;
+  left: .75vw;
+  top: 0vw;
+  padding-top: 1vh;
+  display:grid;/*normally grid*/
+  grid-template-rows: repeat(2 auto);
+  grid-template-columns: repeat(4, 1fr);
+  width: 95%;
+  height: 95%;
+  background-color: white;;
+  color:black;
+  text-align: center;
+
+}
+
+.weekDaysHolder div h4 {
+
+  height: 1vw;
+  position: relative;
+  top: .5vw;
+}
+.dayDescHolder {
+  text-align: center;
+  border: solid rgb(8, 218, 229);
+  display: block;
+  width: 6vw;
+  height: 8.5vw;
+  position: relative;
+  left: 1.5vh;
+  color:snow;
+  border-radius: 1vw; 
+  background-color: #0277CF;
+}
+
+.addDayInfo {
+  position: relative;
+  border-radius: 1vw;
+  color: #ffffff;
+  background-color: #878787;
+  height: 1.25vw;
+  width: 5vw;
+  top: 6vw;
+}
+
+
+
+.weekDayFlexArea{
+  text-align: center;
+  color: white;
+  border: solid rgb(8, 218, 229);
+  display: block;
+  border-radius: 1vw; 
+  background-color: #0277CF;
+  width: 6vw;
+  height: 8.5vw;
+  position: relative;
+  top: 1.25vw;
+  left: .75vw;
+}
+
+.randomQuote span {
+ padding: 1.5vh;
+}
+
+
+
+.weeksHolder {
+   position: relative;
+  left: .75vw;
+  top: 0vw;
+  display: grid;
+  padding-top: 1vh;
+  grid-template-rows: repeat(2 auto);
+  grid-template-columns: repeat(2, 1fr);
+  width: 95%;
+  height: 95%;
+  background-color: white;;
+  color:black;
+  text-align: center;
+}
+
+
+.weekdesc {
+   
+  border: solid rgb(8, 218, 229);
+  display: block;
+  width: 10vw;
+  height: 8.5vw;
+  position: relative;
+  left: 5vh;
+  color:snow;
+  border-radius: 1vw; 
+  background-color: #0277CF;
+}
+
+
+.monthsHolder {
+   position: relative;
+   display: grid;
+   right: .2vw;
+  top: 0vw;
+  padding-top: 1vh;
+  grid-template-rows: repeat(2 auto);
+  grid-template-columns: repeat(4, 1fr);
+  width: 90%;
+  height: 95%;
+  color:black;
+  text-align: center;
+}
+.Month {
+  background-color: #0277CF;
+  border: solid .25vh rgb(8, 218, 229);
+  border-radius: 1vw;
+  margin: .5vh;
+  height: 7vw;
+  padding-left: .5vh;
+  padding-right: .5vh;
+}
+
+.percentages {
+ display: grid;/*normally grid*/
+ grid-template-columns: repeat(2,1fr);
+ width: 6.3vw;
+ gap: 3.45vw;
+ padding-left: .5vh;
+
+ 
+}
+
+.percentages h5 {
+  font-size: .75vw;
+  position: relative;
+}
+
+
+.progressBorder {
+  height: 1vw;
+  width: 100%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #ffffff;
+}
+
+#progressBar1 {
+  height: 1vw;
+  width: 50%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #e3b025;
+}
+#progressBar2 {
+  height: 1vw;
+  width: 50%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #e3b025;
+}
+#progressBar3 {
+  height: 1vw;
+  width: 50%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #e3b025;
+}
+#progressBar4 {
+  height: 1vw;
+  width: 50%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #e3b025;
+}
+#progressBar5 {
+  height: 1vw;
+  width: 50%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #e3b025;
+}
+#progressBar6 {
+  height: 1vw;
+  width: 50%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #e3b025;
+}
+#progressBar7 {
+  height: 1vw;
+  width: 50%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #e3b025;
+}
+#progressBar8 {
+  height: 1vw;
+  width: 50%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #e3b025;
+}
+#progressBar9 {
+  height: 1vw;
+  width: 50%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #e3b025;
+}
+#progressBar10 {
+  height: 1vw;
+  width: 50%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #e3b025;
+}
+#progressBar11 {
+  height: 1vw;
+  width: 50%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #e3b025;
+}
+#progressBar12 {
+  height: 1vw;
+  width: 50%;
+  position: relative;
+  top: 0vw;
+  left: 0vh;
+  border-radius: 1vw;
+  display: block;
+  background-color: #e3b025;
+}
+
+
+
+
+/*************************************/
+
+
+
+.habitTracking {
+  display: block;
+  background-color: white;
+  width: 12vw;
+  height: 25vw;
+  position: relative;
+  left: 40vw;
+  bottom: 20.5vw;
+  text-align: center;
+  border: solid rgb(8, 218, 229);
+  border-radius: 1vw;
+}
+
+.habbits {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  gap: .5vw;
+  
+}
+
+.habbits button {
+  background-color: #0277CF;
+  color: snow;
+  border: none;
+  padding-top: .25vw;
+  padding-bottom: .25vw;
+  border: solid lightblue .1vh;
+  border-radius: 1vw;
+  width: 10vw;
+  position: relative;
+  left: 1vw;
+ 
+}
+
+.habbits button:hover {
+  background-color: rgb(114, 206, 255);
+}
+
+.habitTracking h4 {
+  color:black;
+}
+
+.plotHolder {
+  width: 40vw;
+  height: 25vw;
+  background-color: #ffffff;
+  position: relative;
+  bottom: 45.5vw;
+  left: 55vw;
+  border: rgb(8, 218, 229) solid .5vh;
+  border-radius: 1vw;
+}
+
+.plotArea {
+  position: relative;
+  top: 2vw;
+  left: 3vw;
+  height: 20vw;
+  width: 30vw;  
+ 
+
+  border-bottom: 1px solid #000000;
+}
+
+.productionBar {
+  width: .75vw;
+  height:19.8vw;
+  z-index: 2;
+  position: relative;
+  background-image: linear-gradient(to bottom, rgb(0, 170, 255), rgb(0, 0, 0));
+  border-radius: 1vw;
+  right: 1.9vw;
+  bottom: 21.1vw;
+}
+.productionBarBorder {
+  width: 1vw;
+  height:20vw;
+  border-radius: 1vw;
+  border: .5vh solid black;
+  border-radius: 1vw;
+  position: relative;
+  right: 2vw;
+  bottom: 0vw;
+}
+.productionLabels {
+
+  width: 20vw;
+  position: relative;
+  bottom: 10.75vw;
+  right: 12.5vw;
+  transform: rotate(270deg);
+  display: flex;
+  flex-direction: row;
+  gap: 12.75vw;
+}
+
+
+.plotPoint {
+  position: absolute;
+  transform: translate(-50%, 50%);  /* center the circle on the point */
+  transition: bottom 0.5s ease;     /* animate when data loads */
+}
+
+.plotPoint .pointValue {
+  position: absolute;
+  bottom: 100%;         /* sit just above the circle */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+}
+
+.plotPoint .pointDay {
+  position: absolute;
+  top: 100%;            /* sit just below the circle */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.plotPoint::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  background-color: #3498db;
+  border-radius: 50%;
+}
+
+
+
+.loginPage {
+  position: relative;
+  text-align: center;
+  width: 20vw;
+  height: 14vw;
+  background-color: rgb(50, 87, 110);
+  z-index: 2;
+  bottom: 68vw;
+  left: 40vw;
+  color: white;
+  display: none;
+}
+
+/* .logo {
+  background-image:url('images/Logo.webp');
+  width: 27.5vw;
+  height: 20vw;
+  position: relative;
+  
+  transform: scale(.25);
+  
+} */
+
+
+/* Dropdown Button */
+/*keep plot graph and add connections*/
