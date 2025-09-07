@@ -1,4 +1,3 @@
-# ----------------------------------------------------------
 # TEST SCRIPT
 # ----------------------------------------------------------
 # This script demonstrates how to interact with the DATABASE class.
@@ -29,7 +28,7 @@ def testUserWeeklyHabits(username, password):
     """
     
     # Step 0: Connect to the local database
-    db = DATABASE("data/database.db")  # Path to your SQLite database file
+    db = DATABASE("database.db")  # Path to your SQLite database file
 
     # Step 1: Login
     if not db.loginFunction(username, password):
@@ -136,7 +135,7 @@ def testUserWeeklyHabits(username, password):
 # ----------------------------------------------------------
 # How to run this test script:
 # 1. Run the script directly:
-#       python unitTest.py
+#       python test.py
 # 2. Enter username and password for login.
 # 3. Follow interactive menu to view or modify habit data, or add users.
 # ----------------------------------------------------------
