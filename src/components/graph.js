@@ -1,41 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import './ProgressPlot.css';
 
-const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-function ProgressPlot() {
-  // Start with zeros so points sit on the baseline
-  const [scores, setScores] = useState(Array(7).fill(0));
 
-  useEffect(() => {
-    fetch('http://localhost:5000/graph-data')
-      .then(res => res.json())
-      .then(data => {
-        // Keep seven entries; fill missing with 0
-        const merged = Array(7).fill(0).map((_, i) => data[i] ?? 0);
-        setScores(merged);
-      })
-      .catch(err => {
-        console.error('Fetch error:', err);
-        // leave zeros if error
-      });
-  }, []);
+function ProgressPlot({ scores, selectedHabit }) {
+  // Extract scores for the selected habit
+  const habitScores = scores.map(day => {
+    const value = day[selectedHabit];
+    return typeof value === 'number' ? value : 0;
+  });
 
-  // Prevent division by zero
-  const maxScore = Math.max(...scores, 1);
+  const maxScore = Math.max(...habitScores, 1);
+
+  // Fallback if no data is available
+  if (!habitScores.some(score => score > 0)) {
+    return (
+      <div className="plotHolder">
+        <p className="noDataMessage">
+          No data available for <strong>{selectedHabit}</strong> this week.
+        </p>
+      </div>
+    );
+  }
+
 
   return (
     <div className="plotHolder">
       <div className="plotArea">
-        <div className='productionBarBorder'></div>
-        <div className='productionLabels'><h5>Improving</h5><h5>Declining</h5></div>
-        <div className='productionBar'></div>
-        
-        {scores.map((score, i) => {
-          // horizontal position: evenly spaced across 0–100%
-          const leftPct = (i / (scores.length - 1)) * 100;
+        <div className="productionBarBorder"></div>
+        <div className="productionLabels">
+          <h5>Improving</h5>
+          <h5>Declining</h5>
+        </div>
+        <div className="productionBar"></div>
 
-          // vertical position: score/max → 0–100%
+        {habitScores.map((score, i) => {
+          const leftPct = (i / (habitScores.length - 1)) * 100;
           const bottomPct = (score / maxScore) * 100;
+
+          // Color intensity based on score
+          const intensity = Math.floor((score / maxScore) * 255);
+          const pointColor = `rgb(${255 - intensity}, ${intensity}, 150)`;
 
           return (
             <div
@@ -43,8 +49,10 @@ function ProgressPlot() {
               className="plotPoint"
               style={{
                 left: `${leftPct}%`,
-                bottom: `${bottomPct}%`
+                bottom: `${bottomPct}%`,
+                backgroundColor: pointColor
               }}
+              title={`${days[i]}: ${score} hrs`}
             >
               <div className="pointValue">{score}</div>
               <div className="pointDay">{days[i]}</div>
@@ -57,3 +65,4 @@ function ProgressPlot() {
 }
 
 export default ProgressPlot;
+
