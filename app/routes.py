@@ -9,7 +9,7 @@ main = Blueprint("main", __name__)
 
 # Creates a database instance so data can be queried.
 # This sets up a connection to the SQLite database and permits access to db.session.
-db = DATABASE("../data/database.db")
+db = DATABASE("data/database.db")
 
 
 # Route to confirm Flask is running and connected to React.
