@@ -9,15 +9,17 @@ import HabitTracking from './components/habitList.js';
 import ProgressGraph from './components/graph.js';
 import Login from './components/loginPop.js';
 import LogoutButton from './components/LogoutButton.js';
+import GraphDisplay from './components/graphDisplay.js';
 
 function App() {
   const [showSettings, setShowSettings] = useState(false);
-
+  
   // Tracks logged-in user
   const [user, setUser] = useState(null);
 
   // Tracks which habit is selected (default: studying)
-  const [selectedHabit, setSelectedHabit] = useState('studying');
+  const [selectedHabit, setSelectedHabit] = useState('study');
+  const [viewMode, setViewMode] = useState('daily');
 
   // Stores full habit data for the logged-in user
   const [habitData, setHabitData] = useState([]);
@@ -48,6 +50,10 @@ function App() {
     localStorage.removeItem('username');
     setUser(null);
   };
+  useEffect(() => {
+  console.log('Habit Data in App:', habitData);
+}, [habitData]);
+
 
   return (
     <div className="mainPage">
@@ -64,19 +70,24 @@ function App() {
           <LogoutButton onLogout={handleLogout} />
 
           <AddButton />
-
-          <CalendarHolder
-            username={user}
-            selectedHabit={selectedHabit}
-            onHabitsFetched={setHabitData}
-          />
-
+          
+      <CalendarHolder
+       username={user}
+       selectedHabit={selectedHabit}
+       onHabitsFetched={setHabitData}
+       view={viewMode}
+       onViewChange={setViewMode}
+         />
           <HabitTracking onSelectHabit={setSelectedHabit} />
 
-          <ProgressGraph
-            scores={habitData}
-            selectedHabit={selectedHabit}
+          <GraphDisplay
+           username={user}
+           selectedHabit={selectedHabit}
+           view={viewMode}
           />
+
+
+          
         </>
       )}
     </div>
