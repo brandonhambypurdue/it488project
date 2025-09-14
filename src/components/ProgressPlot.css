@@ -1,52 +1,79 @@
 .plotHolder {
-  padding: 1rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  position: relative;
-  width: 45vw;
-  height: 25vw;
-  bottom: 47.75vw;
-  left: 54vw;
-  border: solid 3px #00eaff;
-}
-
-.plotArea {
-  position: relative;
-  right: .75vh;
-  bottom: .5vh;
-  border: 1px solid #00eaff;
-  background: linear-gradient(to top, #c8f9ff, #ffffff);
-  overflow: hidden;
-  width: 44vw;
-  height: 24vw;
-}
-
-.plotPoint {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  width: 45vw;
+  height: 25vw;
+  position: relative;
+  top: 1.25vw;
+  left: 54vw;
+  border: solid 3px purple;
+  border-radius: 1vw;
+  background-color: white;
 }
 
-.pointValue {
-  font-size: 0.7rem;
+.progressBars {
+  display: flex;
+  gap: 3.5vw;
+  align-items: flex-end;
+  height: 200px;
+  position: relative;
+  top: 14.75vw;
+ 
+}
+
+.progressBar {
+  width: 1.5vw;
+  background-color: #4caf50;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  min-height: .5vw; 
+  transition: height 0.5s ease-in-out; 
+
+}
+
+.barContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+
+}
+
+.barValue {
+  font-size: 0.8rem;
   color: #333;
 }
 
-.pointDay {
-  font-size: 0.6rem;
-  color: #666;
+.graphDisplay {
+  width: 000000.1vw;
+  background-color:#ffffff00;
+  position: relative;
+  bottom: 49vw;
 }
 
-.noDataMessage {
-  text-align: center;
-  color: #888;
-  font-style: italic;
-  margin-top: 2rem;
+.lineGraph {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+  width: 44vw;
+  height: 24.5vw;
+  border-radius: 1vw;
+  position: relative;
+  bottom: .5vw;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/*daily will be bar chart and so will weekly 
+/* monthly will be the plot points */

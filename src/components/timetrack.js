@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 export default function TimeButtonGroup({ view, onChange }) {

@@ -4,8 +4,15 @@ import TimeButtonGroup from './timetrack';
 import RandomQuote from './randomquote';
 import './CalendarHolder.css'
 
-export default function CalendarHolder({ username, selectedHabit, onHabitsFetched }) {
-  const [view, setView] = useState('daily');
+export default function CalendarHolder({
+  username,
+  selectedHabit,
+  onHabitsFetched,
+  view,
+  onViewChange
+}) {
+
+  
   const [dayInfo, setDayInfo] = useState({});
   const [habits, setHabits] = useState([]);
 
@@ -63,7 +70,8 @@ export default function CalendarHolder({ username, selectedHabit, onHabitsFetche
 
   return (
     <div className="calendarPage">
-      <TimeButtonGroup view={view} onChange={setView} />
+      <TimeButtonGroup view={view} onChange={onViewChange} />
+
 
       <div className="calendarHolder">
         {view === 'daily' && (

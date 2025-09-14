@@ -1,61 +1,31 @@
 import React from 'react';
 import './ProgressPlot.css';
 
-const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+export default function ProgressGraph({ scores, selectedHabit }) {
+  const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
+  // Normalize day names for lookup
+  const habitMap = scores.reduce((acc, entry) => {
+    acc[entry.day.toLowerCase()] = entry;
+    return acc;
+  }, {});
 
-function ProgressPlot({ scores, selectedHabit }) {
-  // Extract scores for the selected habit
-  const habitScores = scores.map(day => {
-    const value = day[selectedHabit];
-    return typeof value === 'number' ? value : 0;
-  });
-
-  const maxScore = Math.max(...habitScores, 1);
-
-  // Fallback if no data is available
-  if (!habitScores.some(score => score > 0)) {
-    return (
-      <div className="plotHolder">
-        <p className="noDataMessage">
-          No data available for <strong>{selectedHabit}</strong> this week.
-        </p>
-      </div>
-    );
-  }
-
+  // Safely calculate max value
+  const maxValue = Math.max(...scores.map(h => h[selectedHabit] || 0), 0);
 
   return (
-    <div className="plotHolder">
-      <div className="plotArea">
-        <div className="productionBarBorder"></div>
-        <div className="productionLabels">
-          <h5>Improving</h5>
-          <h5>Declining</h5>
-        </div>
-        <div className="productionBar"></div>
-
-        {habitScores.map((score, i) => {
-          const leftPct = (i / (habitScores.length - 1)) * 100;
-          const bottomPct = (score / maxScore) * 100;
-
-          // Color intensity based on score
-          const intensity = Math.floor((score / maxScore) * 255);
-          const pointColor = `rgb(${255 - intensity}, ${intensity}, 150)`;
+    <div className='plotHolder'>
+      <div className='progressBars'>
+        {days.map((day) => {
+          const habit = habitMap[day];
+          const value = habit?.[selectedHabit] ?? 0;
+          const height = `${(value / maxValue) * 17}vw`;
 
           return (
-            <div
-              key={i}
-              className="plotPoint"
-              style={{
-                left: `${leftPct}%`,
-                bottom: `${bottomPct}%`,
-                backgroundColor: pointColor
-              }}
-              title={`${days[i]}: ${score} hrs`}
-            >
-              <div className="pointValue">{score}</div>
-              <div className="pointDay">{days[i]}</div>
+            <div key={day} className='barContainer'>
+              <div className='barValue'>{value}</div>
+              <div className='progressBar' style={{ height }} />
+              <h5 className='dayLabel'>{day.charAt(0).toUpperCase() + day.slice(1)}</h5>
             </div>
           );
         })}
@@ -63,6 +33,3 @@ function ProgressPlot({ scores, selectedHabit }) {
     </div>
   );
 }
-
-export default ProgressPlot;
-

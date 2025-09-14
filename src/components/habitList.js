@@ -7,6 +7,9 @@ function HabitTracking({ onSelectHabit, selectedHabit }) {
     { key: 'sleep', label: '😴 Sleeping' },
     { key: 'hobby', label: '🎨 Hobby' }
   ];
+  console.log('Selected Habit:', selectedHabit);
+console.log('Habit Data:', habits);
+
 
   return (
     <div className="habitTracking">
@@ -28,3 +31,35 @@ function HabitTracking({ onSelectHabit, selectedHabit }) {
 }
 
 export default HabitTracking;
+
+
+/*import React from 'react';
+
+export default function TimeButtonGroup({ view, onChange }) {
+  return (
+    <div className="btn-group" role="group" aria-label="Time selection">
+      <button
+        type="button"
+        className={`btn ${view === 'daily' ? 'active' : ''}`}
+        onClick={() => onChange('daily')}
+      >
+        Daily
+      </button>
+      <button
+        type="button"
+        className={`btn ${view === 'weekly' ? 'active' : ''}`}
+        onClick={() => onChange('weekly')}
+      >
+        Weekly
+      </button>
+      <button
+        type="button"
+        className={`btn ${view === 'monthly' ? 'active' : ''}`}
+        onClick={() => onChange('monthly')}
+      >
+        Monthly
+      </button>
+    </div>
+  );
+}
+*/
