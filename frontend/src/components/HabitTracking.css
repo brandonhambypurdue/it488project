@@ -1,0 +1,31 @@
+.habitTracking {
+  margin: 1rem 0;
+  text-align: center;
+  position: relative;
+  bottom: 22.1vw;
+}
+
+.habits {
+    display: flex;
+    flex-direction: column;
+}
+
+.habits button {
+  margin: 0.5rem;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #0078d4;
+  background-color: white;
+  color: #0078d4;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.habits button :hover {
+  background-color: #0078d4;
+  color: white;
+}
+
+
+
