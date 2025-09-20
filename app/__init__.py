@@ -15,9 +15,17 @@ def create_app():
     # So routes are organized in a separate file.
     from .routes import main
 
-    # Registers the blueprint with the Flask app.
-    # This connects the routes to the app so they can be accessed.
-    app.register_blueprint(main)
+   # Registers the main routes blueprint 
+    from .routes import main                          
+    app.register_blueprint(main)                      
+
+    # Registers the habits blueprint.
+    from .habits import habits_bp                      
+    app.register_blueprint(habits_bp)  
+
+    # Registers the reminders blueprint.
+    from .reminders import reminders_bp            
+    app.register_blueprint(reminders_bp)
 
     # Returns the configured Flask app so it can be run.
     return app
