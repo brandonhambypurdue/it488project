@@ -2,14 +2,12 @@
 import './App.css';
 import './components/displayDateTime.js';
 import React, { useState, useEffect } from 'react';
-import TimeButtonGroup from './components/timetrack.js';
-import AddButton from './components/additionButton.js';
 import CalendarHolder from './components/calendarholder.js';
 import HabitTracking from './components/habitList.js';
-import ProgressGraph from './components/graph.js';
 import Login from './components/loginPop.js';
 import LogoutButton from './components/LogoutButton.js';
 import GraphDisplay from './components/graphDisplay.js';
+
 
 function App() {
   const [showSettings, setShowSettings] = useState(false);
@@ -66,30 +64,35 @@ function App() {
           <h1 className="welcome">
             Good afternoon, <span>{user}</span>
           </h1>
-
+         
           <LogoutButton onLogout={handleLogout} />
-
-          <AddButton />
+        
           
       <CalendarHolder
+      
        username={user}
        selectedHabit={selectedHabit}
        onHabitsFetched={setHabitData}
        view={viewMode}
        onViewChange={setViewMode}
+
+       
+     
          />
           <HabitTracking onSelectHabit={setSelectedHabit} />
-
+       
           <GraphDisplay
            username={user}
            selectedHabit={selectedHabit}
            view={viewMode}
           />
 
-
-          
+      
+           
         </>
+         
       )}
+ 
     </div>
   );
 }

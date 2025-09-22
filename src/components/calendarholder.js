@@ -3,7 +3,8 @@ import axios from 'axios';
 import TimeButtonGroup from './timetrack';
 import RandomQuote from './randomquote';
 import './CalendarHolder.css'
-
+import PopupModal from './PopupModal';
+import './PopupModal.css'
 export default function CalendarHolder({
   username,
   selectedHabit,
@@ -15,6 +16,9 @@ export default function CalendarHolder({
   
   const [dayInfo, setDayInfo] = useState({});
   const [habits, setHabits] = useState([]);
+  const [showPopup, setShowPopup] = useState('None');
+  const [activeDay, setActiveDay] = useState('');
+  const [inputValue, setInputValue] = useState('');
 
   const days = [
     'monday', 'tuesday', 'wednesday',
@@ -89,7 +93,15 @@ export default function CalendarHolder({
                     ) : (
                       <p>No data</p>
                     )}
-                    <button type="button" className="addDayInfo">Add info</button>
+                    <button type="button" 
+                    className="addDayInfo"
+                    onClick={()=> {
+                      setActiveDay(day);
+                      setShowPopup(true);
+                    }}
+                    >
+                      Add info
+                      </button>
                   </span>
                   <div className="habitValue">
                    
@@ -134,6 +146,35 @@ export default function CalendarHolder({
           </div>
         )}
       </div>
+       <PopupModal isOpen={showPopup} onClose={() => setShowPopup(false)}>
+  <h3>Enter info for {activeDay.charAt(0).toUpperCase() + activeDay.slice(1)}</h3>
+  <input
+    className='inputDayInfo'
+    type="number"
+    placeholder="Hours spent"
+    value={inputValue}
+    onChange={(e) => setInputValue(e.target.value)}
+  />
+  <button
+    className='enterInfo-btn'
+    onClick={async () => {
+      try {
+        await axios.post(`http://localhost:5000/api/habits/${username}`, {
+          day: activeDay,
+          habit: selectedHabit,
+          value: inputValue
+        });
+        setShowPopup(false);
+        setInputValue('');
+      } catch (err) {
+        console.error('Error submitting habit info:', err);
+      }
+    }}
+  >
+    Submit
+  </button>
+</PopupModal>
+
     </div>
   );
 }

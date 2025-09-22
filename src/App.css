@@ -42,14 +42,22 @@ background-color:rgb(0, 154, 238);
   border: .22vh solid rgb(8,218,229);
   border-radius: 1vw;
   position: relative;
+  bottom: 1vw;
+  text-align: center;
+  padding-top: 1vh;
+
 }
 
 /* The container <div> - needed to position the dropdown content */
+
+
 .dropdown {
-  position: relative;
   display: inline-block;
-    left: 37.5vw;
-    top: 2.25vw;
+  position: relative;
+  bottom: 2vw;
+ 
+
+   
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -57,26 +65,31 @@ background-color:rgb(0, 154, 238);
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  width: 8vw;
+  width: 7.5vw;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
   border-radius: 1vw;
-  overflow: auto;
-  padding-left: 1vh;
-
-}
+  
+} 
 
 /* Links inside the dropdown */
-.dropdown-content button {
+.option {
   color: black;
   width: 7vw;
   height: 2vw;
   text-decoration: none;
   display: block;
   border-radius: 1vw;
+  text-align: center;
+  padding-top: 1.5vh;
 }
 
-.dropdown-content span{
+.option:hover {
+background-color: #0078d4;
+  color: white;
+}
+
+.group-title{
   color: black;
   width: 7vw;
   height: 1.75vw;
@@ -244,16 +257,161 @@ background-color:rgb(0, 154, 238);
 }
 
 
-/* .logo {
-  background-image:url('images/Logo.webp');
-  width: 27.5vw;
-  height: 20vw;
+@media (max-width :1440px) {
+ html {
+  margin: 0;
+  padding: 0;
+  max-height: 50vh;
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', sans-serif;
+  background-color:rgb(0, 154, 238);
+}
+
+.welcome {
   position: relative;
-  
-  transform: scale(.25);
-  
-} */
+  left: 4vw;
+  text-align: center;
+  color:white;
+  padding-top: 1vw;
+  width: 29vw;
+  height: 2.5vw;
+  font-size: 2.25vw;
+}
+
+.mainPage {
+
+width: 100%;
+max-height: 70vh ;
+background-color:rgb(0, 154, 238);
+}
+.btn-group {
+  left: 2vw;
+  bottom: 3.5vw;
+  width: 30vw;
+  height: 2vw;
+}
 
 
-/* Dropdown Button */
-/*keep plot graph and add connections*/
+.btn {
+
+    padding-bottom: 2vw;
+}
+
+
+/****/
+
+.dropbtn {
+  font-size: .75vw;
+
+}
+
+/* The container <div> - needed to position the dropdown content */
+
+
+
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  background-color: #ffffff;
+} 
+
+/* Links inside the dropdown */
+.option {
+  color: black;
+  width: 7vw;
+  height: 2.8vw;
+  font-size: 1vw;
+  padding-bottom: 3vh;
+}
+
+.option:hover {
+background-color: #0078d4;
+  color: white;
+}
+
+.group-title{
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  height: 3vw;
+  font-size: .75vw;
+ 
+  
+}
+
+
+
+
+
+
+  /****/
+
+
+
+
+
+
+
+/*************************************/
+
+
+}
+
+@media (max-width : 1024px) {
+ html {
+  margin: 0;
+  padding: 0;
+  max-height: 50vh;
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', sans-serif;
+  background-color:rgb(0, 154, 238);
+}
+
+.welcome {
+  position: relative;
+  left: 4vw;
+  text-align: center;
+  color:white;
+  padding-top: 1vw;
+  width: 29vw;
+  height: 2.5vw;
+  font-size: 2.25vw;
+}
+
+.mainPage {
+
+width: 100%;
+max-height: 70vh ;
+background-color:rgb(0, 154, 238);
+}
+.btn-group {
+  left: 2vw;
+  bottom: 5vw;
+  width: 30vw;
+  height: 1.5vw;
+}
+
+
+.btn {
+
+    padding-bottom: 2vw;
+}
+
+
+/****/
+
+.dropbtn {
+  font-size: 1vw;
+  padding-bottom: 1.9vw;
+  bottom: 2vw;
+}
+
+
+
+
+.group-title{
+  font-size: 1vw;
+ 
+  
+}
+}
+

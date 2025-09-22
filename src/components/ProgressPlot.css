@@ -7,7 +7,7 @@
   position: relative;
   top: 1.25vw;
   left: 54vw;
-  border: solid 3px purple;
+  border: solid 3px  rgb(8, 218, 229);
   border-radius: 1vw;
   background-color: white;
 }
@@ -42,7 +42,7 @@
 }
 
 .barValue {
-  font-size: 0.8rem;
+  font-size: 1vw;
   color: #333;
 }
 
@@ -55,7 +55,7 @@
 
 .lineGraph {
   background-color: #f9f9f9;
-  border: 1px solid #ccc;
+  border: 1px solid #ccc; 
   margin-top: 20px;
   width: 44vw;
   height: 24.5vw;
@@ -67,8 +67,113 @@
 
 
 
+@media (max-width :1440px) {
+  .plotHolder {
+
+}
+
+.progressBars {
+  gap:1vw;
+  top: 10.75vw;
+ 
+}
+
+.progressBar {
+  width: 1.5vw;
+  background-color: #4caf50;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  min-height: .5vw; 
+  transition: height 0.5s ease-in-out; 
+
+}
 
 
+
+.barValue {
+  font-size: 1.25vw;
+  color: #333;
+}
+
+.graphDisplay {
+  width: 000000.1vw;
+  background-color:#ffffff00;
+  position: relative;
+  bottom: 49vw;
+}
+
+.lineGraph {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc; 
+  width: 44vw;
+  height: 25vw;
+  border-radius: 1vw;
+  position: relative;
+  bottom: .5vw;
+  
+  
+}
+}
+
+@media (max-width : 1024px) {
+   .plotHolder {
+    top: 0vw;
+}
+
+.progressBars {
+  gap: 1.5vw;
+  top: 5.75vw;
+ 
+}
+
+.progressBar {
+  width: 1.5vw;
+  background-color: #4caf50;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  min-height: .5vw; 
+  transition: height 0.5s ease-in-out; 
+
+}
+.dayLabel {
+  
+  font-size: 1.25vw;
+}
+
+
+
+.barValue {
+  font-size: 1.25vw;
+  color: #333;
+}
+
+.graphDisplay {
+  width: 000000.1vw;
+  background-color:#ffffff00;
+  position: relative;
+  bottom: 49vw;
+}
+
+.lineGraph {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc; 
+  width: 44vw;
+  height: 25vw;
+  border-radius: 1vw;
+  position: relative;
+  bottom: .5vw;
+  
+  
+}
+}
+
+@media (max-width : 768px) {
+  .progressBars {
+  
+  top: .75vw;
+ 
+}
+}
 
 
 
