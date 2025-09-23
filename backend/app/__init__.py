@@ -8,24 +8,17 @@ def create_app():
     # Creates a new Flask app instance.
     app = Flask(__name__)
 
-    # Enable CORS so React can talk to Flask.
+    # Enable CORS so React (running on a different port) can talk to Flask.
     CORS(app)
 
     # Imports the 'main' blueprint from the routes module.
     # So routes are organized in a separate file.
     from .routes import main
 
-   # Registers the main routes blueprint 
-    from .routes import main                          
-    app.register_blueprint(main)                      
-
-    # Registers the habits blueprint.
-    from .habits import habits_bp                      
-    app.register_blueprint(habits_bp)  
-
-    # Registers the reminders blueprint.
-    from .reminders import reminders_bp            
-    app.register_blueprint(reminders_bp)
+    # Registers the blueprint with the Flask app.
+    # This connects the routes to the app so they can be accessed.
+    app.register_blueprint(main)
 
     # Returns the configured Flask app so it can be run.
     return app
+
