@@ -61,7 +61,7 @@ function App() {
         <Login onLogin={handleLogin} />
       ) : (
         <>
-          <h1 className="welcome">Good afternoon, <span></span></h1>
+        <h1 className="welcome">Good afternoon, <span>{user.username}</span></h1>
           <LogoutButton onLogout={handleLogout} />
 
           <CalendarHolder
