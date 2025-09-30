@@ -23,6 +23,26 @@ class USERS(Base):
     username = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
 
+# ----------------------------
+# CLASS: HABITS
+# ----------------------------
+class HABITS(Base):
+    __tablename__ = "habits"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, nullable=False)  # link to USERS.id
+    day_id = Column(Integer, nullable=False)
+    month = Column(String, nullable=False)
+    day = Column(Integer, nullable=False)
+    sleep = Column(Integer, CheckConstraint("sleep >= 0"))
+    study = Column(Integer, CheckConstraint("study >= 0"))
+    hobby = Column(Integer, CheckConstraint("hobby >= 0"))
+    meditation = Column(Integer)
+    journaling = Column(Integer)
+    self_reflection = Column(Integer)
+    stretching = Column(Integer)
+    hydration = Column(Integer)
+    lets_break_a_habit = Column(Integer)
 
 # ----------------------------
 # CLASS: DATABASE
@@ -33,7 +53,7 @@ class DATABASE:
             self.engine = create_engine(f"sqlite:///{dbpath}", echo=False)
             Session = sessionmaker(bind=self.engine)
             self.session = Session()
-            self.metadata = MetaData(bind=self.engine)
+            self.metadata = MetaData()
             logger.logDatabaseChange(f"Connected to database at {dbpath}")
         except Exception as e:
             logger.logDatabaseError(f"Failed to connect to database {dbpath}: {str(e)}")
