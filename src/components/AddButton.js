@@ -27,6 +27,7 @@ export default function AddButton({ onAddHabit }) {
         aria-haspopup="menu"
       >
         Add Habit ▾
+       
       </div>
 
       {isOpen && (

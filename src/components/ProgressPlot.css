@@ -66,14 +66,47 @@
 
 
 
+@media (max-width:1920px){
+.dayLabelsPlot {
+  
+}
+h3 {
+ 
+}
+.lineGraph {
+  
+}
+      .plotHolder {
+        
+}
 
+.progressBars {
+
+  top: 12vw;
+  
+ 
+}
+
+
+
+.dayLabel {
+  width: 3vw;
+}
+.barValue {
+  font-size: 1.25vw;
+  color: #333;
+}
+
+
+
+}
 @media (max-width :1440px) {
   .plotHolder {
 
 }
 
 .progressBars {
-  gap:1vw;
+  gap:5vw;
   top: 10.75vw;
  
 }
@@ -113,8 +146,44 @@
   
   
 }
+.dayLabel {
+  position: relative;
+  
+  width: 1vw;
+  font-size: 1vw;
+}
+}
+@media (max-width: 1150px) {
+    .plotHolder {
+
 }
 
+.progressBars {
+  gap:1vw;
+  top: 7.75vw;
+ 
+}
+
+
+
+
+
+
+
+
+
+.lineGraph {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc; 
+  width: 44vw;
+  height: 25vw;
+  border-radius: 1vw;
+  position: relative;
+  bottom: .5vw;
+  
+  
+}
+}
 @media (max-width : 1024px) {
    .plotHolder {
     top: 0vw;
@@ -127,7 +196,7 @@
 }
 
 .progressBar {
-  width: 1.5vw;
+  width: 1.5vw; 
   background-color: #4caf50;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;

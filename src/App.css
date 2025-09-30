@@ -255,8 +255,55 @@ background-color: #0078d4;
   color: red;
   margin-top: 0.5rem;
 }
+@media (max-width: 1920px) {
+.dropbtn {
+  text-align: center;
+  padding-bottom: 1.5vw;
+};
+h1 {
+  font-size: 1vw;
+}
+.welcome {
+  width: 25vw;
+  font-size: 2vw;
 
 
+}
+.option {
+  
+  width: 7vw;
+  height: 2vw;
+  border-radius: 1vw;
+  text-align: center;
+  padding-bottom: 1vh;
+  
+}
+
+.group-title {
+  padding-bottom: 5vh;
+}
+.dropdown-content{
+  height: 23.5vw;
+}
+}
+@media (max-width:1600px) {
+  .welcome {
+  font-size: 2vw;
+}
+.option {
+  width: 7vw;
+
+}
+
+
+.group-title {
+  font-size: .85vw;
+  padding-bottom: 5vh;
+}
+.dropdown-content{
+  height: 23.5vw;
+}
+}
 @media (max-width :1440px) {
  html {
   margin: 0;
@@ -354,6 +401,9 @@ background-color: #0078d4;
 /*************************************/
 
 
+}
+@media (max-width: 1150px) {
+  
 }
 
 @media (max-width : 1024px) {
