@@ -1,4 +1,3 @@
-# TEST SCRIPT
 # ----------------------------------------------------------
 # This script demonstrates how to interact with the SQLite database directly.
 # It allows a user to:
