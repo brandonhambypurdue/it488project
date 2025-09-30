@@ -1,50 +1,75 @@
-# data/database.py
-
 # Imported Modules
-import sqlite3
-from log.log import logger
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, CheckConstraint
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, relationship
+
+# Initial Variables
+Base = declarative_base()
 
 # ----------------------------
 # CLASS: USERS
 # ----------------------------
-# Represents the "users" table in the SQLite database.
+# This class represents the "users" table in the SQLite database.
 # Each user has:
 #   - id: unique primary key (auto-incremented)
 #   - first_name: The user's first name
 #   - last_name: The user's last name
 #   - username: Unique login username
 #   - password: Plaintext password (for simplicity; not secure)
-class USERS:
-    def __init__(self, id, first_name, last_name, username, password):
-        self.id = id
-        self.first_name = first_name
-        self.last_name = last_name
-        self.username = username
-        self.password = password
+# Each user can have multiple HABITS entries linked through the "habits" table.
+class USERS(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)  # Primary key
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
+    username = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=False)
+
+    # Relationship to HABITS table (1 user -> many habit entries)
+    habits = relationship("HABITS", back_populates="user", cascade="all, delete-orphan")
+
+
+# ----------------------------
+# CLASS: HABITS
+# ----------------------------
+# This class represents the "habits" table in the SQLite database.
+# Each habit row is tied to a user (via foreign key id) and a day_of_week.
+# It stores the numeric values of different habits for that user on that day:
+#   - sleep: hours slept
+#   - study: hours spent studying
+#   - hobby: hours spent on hobbies
+class HABITS(Base):
+    __tablename__ = "habits"
+
+    id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)  # Links to USERS table
+    day_of_week = Column(String, primary_key=True)  # e.g., "Monday", "Tuesday"
+
+    sleep = Column(Integer, CheckConstraint("sleep >= 0"))
+    study = Column(Integer, CheckConstraint("study >= 0"))
+    hobby = Column(Integer, CheckConstraint("hobby >= 0"))
+
+    # Relationship back to USERS table
+    user = relationship("USERS", back_populates="habits")
 
 
 # ----------------------------
 # CLASS: DATABASE
 # ----------------------------
-# Wraps the SQLite connection and provides functions
+# This class wraps the SQLAlchemy ORM session and provides functions
 # to interact with the database (login, get habits, modify habits, add habits, add users).
 class DATABASE:
     # ----------------------------
     # FUNCTION: __init__
     # ----------------------------
     # Initializes the DATABASE object.
-    # Connects to the local SQLite database file.
+    # Connects to the local SQLite database file and sets up a session.
     # Arguments:
     #   dbpath: path to the .db file (default "database.db")
     def __init__(self, dbpath="database.db"):
-        try:
-            self.conn = sqlite3.connect(dbpath)
-            self.conn.execute("PRAGMA foreign_keys = ON;")  # enable foreign keys
-            self.cursor = self.conn.cursor()
-            logger.logDatabaseChange(f"Connected to database at {dbpath}")
-        except Exception as e:
-            logger.logDatabaseError(f"Failed to connect to database {dbpath}: {str(e)}")
-            raise e
+        self.engine = create_engine(f"sqlite:///{dbpath}", echo=False)
+        Session = sessionmaker(bind=self.engine)
+        self.session = Session()
 
     # ----------------------------
     # FUNCTION: loginFunction
@@ -54,35 +79,10 @@ class DATABASE:
     #   username: string, the username of the user
     #   password: string, the plaintext password
     # Returns:
-    #   user ID if login successful, None otherwise
+    #   True if login successful, False otherwise
     def loginFunction(self, username, password):
-        try:
-            self.cursor.execute(
-                "SELECT id FROM users WHERE username=? AND password=?",
-                (username, password)
-            )
-            result = self.cursor.fetchone()
-            if result:
-                uid = result[0]
-                logger.logDatabaseChange(f"Successful login for user '{username}' (id={uid})")
-                return uid
-            else:
-                logger.logDatabaseError(f"Failed login attempt for username '{username}'")
-                return None
-        except Exception as e:
-            logger.logDatabaseError(f"Exception during login for username '{username}': {str(e)}")
-            return None
-
-    # ----------------------------
-    # HELPER: getUserTable
-    # ----------------------------
-    # Returns the table name for the user's habit table.
-    # Arguments:
-    #   uid: integer, user ID
-    # Returns:
-    #   string table name
-    def getUserTable(self, uid):
-        return f"user_{uid}"
+        u = self.session.query(USERS).filter_by(username=username, password=password).first()
+        return u is not None
 
     # ----------------------------
     # FUNCTION: getHabitValue
@@ -90,19 +90,15 @@ class DATABASE:
     # Returns the numeric value of a specific habit for a user on a given day.
     # Arguments:
     #   uid: integer, user ID
-    #   day_id: integer, the day ID (1-365)
-    #   habit: string, habit name
+    #   day_of_week: string, day of the week (e.g., "Monday")
+    #   habit: string, habit name ("sleep", "study", or "hobby")
     # Returns:
     #   Integer value of the habit, or None if no entry exists
-    def getHabitValue(self, uid, day_id, habit):
-        table = self.getUserTable(uid)
-        try:
-            self.cursor.execute(f"SELECT {habit} FROM {table} WHERE day_id=?", (day_id,))
-            result = self.cursor.fetchone()
-            return result[0] if result else None
-        except Exception as e:
-            logger.logDatabaseError(f"getHabitValue failed for user {uid}, day {day_id}, habit {habit}: {str(e)}")
-            return None
+    def getHabitValue(self, uid, day_of_week, habit):
+        h = self.session.query(HABITS).filter_by(id=uid, day_of_week=day_of_week).first()
+        if h and hasattr(h, habit):
+            return getattr(h, habit)
+        return None
 
     # ----------------------------
     # FUNCTION: modifyHabit
@@ -110,26 +106,18 @@ class DATABASE:
     # Modifies the numeric value of a habit for a user on a specific day.
     # Arguments:
     #   uid: integer, user ID
-    #   day_id: integer, day ID
-    #   habit: string, habit name
+    #   day_of_week: string, day of the week
+    #   habit: string, habit name ("sleep", "study", or "hobby")
     #   val: integer, new numeric value
     # Returns:
     #   True if update successful, False if no habit entry exists
-    def modifyHabit(self, uid, day_id, habit, val):
-        table = self.getUserTable(uid)
-        try:
-            self.cursor.execute(f"UPDATE {table} SET {habit}=? WHERE day_id=?", (val, day_id))
-            if self.cursor.rowcount > 0:
-                self.conn.commit()
-                logger.logDatabaseChange(f"User {uid}: modified {habit} on day {day_id} → {val}")
-                return True
-            else:
-                logger.logDatabaseError(f"No entry to modify for user {uid} on day {day_id}")
-                return False
-        except Exception as e:
-            self.conn.rollback()
-            logger.logDatabaseError(f"Exception in modifyHabit for user {uid} on day {day_id}: {str(e)}")
-            return False
+    def modifyHabit(self, uid, day_of_week, habit, val):
+        h = self.session.query(HABITS).filter_by(id=uid, day_of_week=day_of_week).first()
+        if h and hasattr(h, habit):
+            setattr(h, habit, val)
+            self.session.commit()
+            return True
+        return False
 
     # ----------------------------
     # FUNCTION: addHabit
@@ -137,81 +125,31 @@ class DATABASE:
     # Adds a new habit entry for a user on a specific day.
     # Arguments:
     #   uid: integer, user ID
-    #   day_id: integer, day ID
-    #   month: string, month number ('01'-'12')
-    #   day: integer, day of the month
-    #   sleep, study, hobby: integers
-    #   meditation, journaling, self_reflection, stretching, hydration, lets_break_a_habit: optional, default None
+    #   day_of_week: string, day of the week
+    #   sleep: integer, hours slept (default 0)
+    #   study: integer, hours studied (default 0)
+    #   hobby: integer, hours on hobbies (default 0)
     # Returns:
     #   True if addition successful
-    def addHabit(self, uid, day_id, month, day,
-                 sleep=0, study=0, hobby=0,
-                 meditation=None, journaling=None,
-                 self_reflection=None, stretching=None,
-                 hydration=None, lets_break_a_habit=None):
-        table = self.getUserTable(uid)
-        try:
-            self.cursor.execute(f"SELECT day_id FROM {table} WHERE day_id=?", (day_id,))
-            if self.cursor.fetchone():
-                logger.logDatabaseError(f"Day ID {day_id} already exists for user {uid}. Use modifyHabit instead.")
-                return False
-            self.cursor.execute(
-                f"""INSERT INTO {table} 
-                (day_id, month, day, sleep, study, hobby, meditation, journaling, self_reflection,
-                stretching, hydration, lets_break_a_habit)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                (day_id, month, day, sleep, study, hobby,
-                 meditation, journaling, self_reflection, stretching,
-                 hydration, lets_break_a_habit)
-            )
-            self.conn.commit()
-            logger.logDatabaseChange(f"User {uid}: added habits for day {day_id}")
-            return True
-        except Exception as e:
-            self.conn.rollback()
-            logger.logDatabaseError(f"Failed to add habits for user {uid} day {day_id}: {str(e)}")
-            return False
+    def addHabit(self, uid, day_of_week, sleep=0, study=0, hobby=0):
+        h = HABITS(id=uid, day_of_week=day_of_week, sleep=sleep, study=study, hobby=hobby)
+        self.session.add(h)
+        self.session.commit()
+        return True
 
     # ----------------------------
     # FUNCTION: addUser
     # ----------------------------
-    # Adds a new user and creates their habit table.
+    # Adds a new user to the database.
     # Arguments:
     #   first_name: string
     #   last_name: string
     #   username: string (must be unique)
     #   password: string (plaintext)
     # Returns:
-    #   Integer ID of the newly created user, or None if failed
+    #   Integer ID of the newly created user
     def addUser(self, first_name, last_name, username, password):
-        try:
-            self.cursor.execute(
-                "INSERT INTO users (first_name, last_name, username, password) VALUES (?, ?, ?, ?)",
-                (first_name, last_name, username, password)
-            )
-            uid = self.cursor.lastrowid
-
-            table_name = self.getUserTable(uid)
-            self.cursor.execute(
-                f"""CREATE TABLE {table_name} (
-                    day_id INTEGER PRIMARY KEY,
-                    month TEXT NOT NULL,
-                    day INTEGER NOT NULL,
-                    sleep INTEGER CHECK(sleep >= 0),
-                    study INTEGER CHECK(study >= 0),
-                    hobby INTEGER CHECK(hobby >= 0),
-                    meditation INTEGER,
-                    journaling INTEGER,
-                    self_reflection INTEGER,
-                    stretching INTEGER,
-                    hydration INTEGER,
-                    lets_break_a_habit INTEGER
-                )"""
-            )
-            self.conn.commit()
-            logger.logDatabaseChange(f"Added new user {username} (id={uid}) with habit table {table_name}")
-            return uid
-        except Exception as e:
-            self.conn.rollback()
-            logger.logDatabaseError(f"Failed to add user {username}: {str(e)}")
-            return None
+        u = USERS(first_name=first_name, last_name=last_name, username=username, password=password)
+        self.session.add(u)
+        self.session.commit()
+        return u.id
