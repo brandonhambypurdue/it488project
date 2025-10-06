@@ -1,62 +1,62 @@
-# Imported Modules
-from sqlalchemy import create_engine, Column, Integer, String, CheckConstraint, Table, MetaData
+import os
+from sqlalchemy import (
+    create_engine, Column, Integer, String, CheckConstraint,
+    Table, MetaData, text
+)
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import scoped_session, sessionmaker
 from log.log import logger
 
-# Initial Variables
+# ──────────────────────────────────────────────
+# 📦 Database Setup
+# ──────────────────────────────────────────────
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, 'database.db')
+
+engine = create_engine(f"sqlite:///{DB_PATH}", echo=False, future=True)
+Session = scoped_session(sessionmaker(bind=engine))
+
 Base = declarative_base()
 metadata = MetaData()
 
-# ----------------------------
-# CLASS: USERS
-# ----------------------------
-# Represents the "users" table in the SQLite database.
+# ──────────────────────────────────────────────
+# 👤 User Model
+# ──────────────────────────────────────────────
+
 class USERS(Base):
     __tablename__ = "users"
-
     id = Column(Integer, primary_key=True, autoincrement=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     username = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
 
+# ──────────────────────────────────────────────
+# 🧠 Database Wrapper
+# ──────────────────────────────────────────────
 
-# ----------------------------
-# CLASS: DATABASE
-# ----------------------------
 class DATABASE:
     def __init__(self, dbpath="database.db"):
         try:
-            self.engine = create_engine(f"sqlite:///{dbpath}", echo=False)
-            Session = sessionmaker(bind=self.engine)
+            self.engine = create_engine(f"sqlite:///{dbpath}", echo=False, future=True)
             self.session = Session()
-            self.metadata = MetaData(bind=self.engine)
+            self.metadata = MetaData()
             logger.logDatabaseChange(f"Connected to database at {dbpath}")
         except Exception as e:
             logger.logDatabaseError(f"Failed to connect to database {dbpath}: {str(e)}")
             raise e
 
-    # ----------------------------
-    # FUNCTION: loginFunction
-    # ----------------------------
     def loginFunction(self, username, password):
         try:
-            u = self.session.query(USERS).filter_by(username=username, password=password).first()
-            if u:
-                logger.logDatabaseChange(f"Successful login for user '{username}' (id={u.id})")
-                return True
-            else:
-                logger.logDatabaseError(f"Failed login attempt for username '{username}'")
-                return False
+            user = self.session.query(USERS).filter_by(username=username, password=password).first()
+            return bool(user)
         except Exception as e:
-            logger.logDatabaseError(f"Exception during login for username '{username}': {str(e)}")
+            logger.logDatabaseError(f"Login error for '{username}': {str(e)}")
             return False
 
-    # ----------------------------
-    # HELPER: get_user_table
-    # ----------------------------
     def get_user_table(self, uid):
+        """Reflect a dynamic user_<id> table."""
         table_name = f"user_{uid}"
         try:
             table = Table(
@@ -73,108 +73,50 @@ class DATABASE:
                 Column('stretching', Integer),
                 Column('hydration', Integer),
                 Column('lets_break_a_habit', Integer),
-                autoload_with=self.engine
+                autoload_with=self.engine,
+                extend_existing=True
             )
             return table
         except Exception as e:
             logger.logDatabaseError(f"Could not access table '{table_name}': {str(e)}")
             return None
 
-    # ----------------------------
-    # FUNCTION: getHabitValue
-    # ----------------------------
-    def getHabitValue(self, uid, day_id, habit):
-        table = self.get_user_table(uid)
-        if not table:
-            return None
-        try:
-            query = table.select().where(table.c.day_id == day_id)
-            result = self.engine.execute(query).first()
-            if result and habit in result.keys():
-                return result[habit]
-            return None
-        except Exception as e:
-            logger.logDatabaseError(f"getHabitValue failed for user {uid}, day {day_id}, habit {habit}: {str(e)}")
-            return None
+    # ──────────────────────────────────────────
+    # ✅ Raw SQL Habit Retrieval
+    # ──────────────────────────────────────────
 
-    # ----------------------------
-    # FUNCTION: modifyHabit
-    # ----------------------------
-    def modifyHabit(self, uid, day_id, habit, val):
-        table = self.get_user_table(uid)
-        if not table:
-            return False
+    def getHabitValue(self, uid, day_id, column):
+        """Fetch a single habit value via raw SQL."""
         try:
-            query = table.update().where(table.c.day_id == day_id).values({habit: val})
-            result = self.engine.execute(query)
-            if result.rowcount > 0:
-                logger.logDatabaseChange(f"User {uid}: modified {habit} on day {day_id} → {val}")
-                return True
-            else:
-                logger.logDatabaseError(f"No entry to modify for user {uid} on day {day_id}")
-                return False
-        except Exception as e:
-            logger.logDatabaseError(f"Exception in modifyHabit for user {uid} on day {day_id}: {str(e)}")
-            return False
-
-    # ----------------------------
-    # FUNCTION: addHabit
-    # ----------------------------
-    def addHabit(self, uid, day_id, month, day,
-                 sleep=0, study=0, hobby=0,
-                 meditation=None, journaling=None, self_reflection=None,
-                 stretching=None, hydration=None, lets_break_a_habit=None):
-        table = self.get_user_table(uid)
-        if not table:
-            return False
-        try:
-            ins = table.insert().values(
-                day_id=day_id, month=month, day=day,
-                sleep=sleep, study=study, hobby=hobby,
-                meditation=meditation, journaling=journaling,
-                self_reflection=self_reflection, stretching=stretching,
-                hydration=hydration, lets_break_a_habit=lets_break_a_habit
-            )
-            self.engine.execute(ins)
-            logger.logDatabaseChange(f"User {uid}: added habits for day {day_id}")
-            return True
-        except Exception as e:
-            logger.logDatabaseError(f"Failed to add habits for user {uid} day {day_id}: {str(e)}")
-            return False
-
-    # ----------------------------
-    # FUNCTION: addUser
-    # ----------------------------
-    def addUser(self, first_name, last_name, username, password):
-        try:
-            # Add to USERS table
-            u = USERS(first_name=first_name, last_name=last_name, username=username, password=password)
-            self.session.add(u)
-            self.session.commit()
-            uid = u.id
-
-            # Create habit table for this user
             table_name = f"user_{uid}"
-            habit_table = Table(
-                table_name, self.metadata,
-                Column('day_id', Integer, primary_key=True),
-                Column('month', String, nullable=False),
-                Column('day', Integer, nullable=False),
-                Column('sleep', Integer, CheckConstraint("sleep >= 0")),
-                Column('study', Integer, CheckConstraint("study >= 0")),
-                Column('hobby', Integer, CheckConstraint("hobby >= 0")),
-                Column('meditation', Integer),
-                Column('journaling', Integer),
-                Column('self_reflection', Integer),
-                Column('stretching', Integer),
-                Column('hydration', Integer),
-                Column('lets_break_a_habit', Integer)
-            )
-            habit_table.create(self.engine)
-            logger.logDatabaseChange(f"Added new user: {username} (id={uid}) with table {table_name}")
-
-            return uid
+            query = text(f"SELECT {column} FROM {table_name} WHERE day_id = :day_id")
+            result = self.session.execute(query, {"day_id": day_id}).fetchone()
+            logger.logDatabaseChange(f"Raw SQL result for {column}, day_id={day_id}: {result}")
+            return result[0] if result else None
         except Exception as e:
-            self.session.rollback()
-            logger.logDatabaseError(f"Failed to add user {username}: {str(e)}")
+            logger.logDatabaseError(f"Error retrieving '{column}' for user {uid}, day {day_id}: {str(e)}")
             return None
+
+    def getDailyHabits(self, uid, day_id):
+        """Fetch all core habits (sleep, study, hobby) in one query."""
+        try:
+            table_name = f"user_{uid}"
+            query = text(f"""
+                SELECT sleep, study, hobby
+                FROM {table_name}
+                WHERE day_id = :day_id
+            """)
+            result = self.session.execute(query, {"day_id": day_id}).fetchone()
+            if result:
+                habits = {
+                    "sleep": result[0],
+                    "study": result[1],
+                    "hobby": result[2]
+                }
+                logger.logDatabaseChange(f"Daily habits for uid={uid}, day_id={day_id}: {habits}")
+                return habits
+            return None
+        except Exception as e:
+            logger.logDatabaseError(f"Error fetching daily habits for uid={uid}, day {day_id}: {str(e)}")
+            return None
+
