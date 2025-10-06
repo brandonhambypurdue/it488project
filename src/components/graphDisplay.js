@@ -1,85 +1,75 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import axios from 'axios';
 import ProgressGraph from './graph';
 import ManualGraph from './WeeklyProgressgraph';
 import MonthlyProgressGraph from './MonthlyProgressGraph';
 import './ProgressPlot.css';
-
-
 
 export default function GraphDisplay({
   username,
   password,
   selectedHabit,
   view,
-  monthlyTotals,
-  SetWeeklySummary,
-  setWeekTotals
+  dailyData,
+  weekTotals,
+  monthlyTotals
 }) {
-  const [habitData, setHabitData] = useState([]);
-
-  // 🔎 Fetch data directly from backend (like Postman)
+  // 🔎 Log incoming data for debugging
   useEffect(() => {
-    axios.post("http://localhost:5000/api/monthly", { username })
-      .then(res => {
-        // console.log("📦 Raw API response:", res.data);
-        if (res.data.success) {
-          // console.log("📊 Habits array:", res.data.habits);
-          setHabitData(res.data.habits);
-        }
-      })
-      .catch(err => {
-        console.error("❌ API error:", err);
-      });
-  }, [username]);
+    // console.log("📊 GraphDisplay received:");
+    // console.log("🟦 dailyData:", dailyData);
+    // // console.log("🟩 weekTotals:", weekTotals);
+    // console.log("🟧 monthlyTotals:", monthlyTotals);
+    // console.log("🎯 selectedHabit:", selectedHabit);
+    // console.log("📁 view:", view);
+  }, [dailyData, weekTotals, monthlyTotals, selectedHabit, view]);
 
-  // ✅ Compute weekly totals from fetched data
-  const weekTotals = useMemo(() => {
-    if (!habitData || habitData.length === 0) return [0, 0, 0, 0, 0];
-
-    const totals = [0, 0, 0, 0, 0];
-    const habitKey = selectedHabit?.toLowerCase();
-
-    for (const row of habitData) {
-      const d = row.day;
-      if (!d) continue;
-
-      const value = Number(row[habitKey] ?? 0);
-      // console.log(`Day ${d} | ${habitKey} =`, row[habitKey], "→ parsed:", value);
-
-      const weekIndex = Math.floor((d - 1) / 7);
-      if (weekIndex >= 0 && weekIndex < 5) {
-        totals[weekIndex] += value;
-      }
-    }
+  // 🔹 Shape daily data
+const shapedDaily = useMemo(() => {
+  const safeData = Array.isArray(dailyData?.habits) ? dailyData.habits : [];
+  return {
+    labels: safeData.map((row, i) => row.day ?? `Day ${row.day_id ?? i + 1}`),
+    values: safeData.map(row => Number(row[selectedHabit] ?? 0))
+  };
+}, [dailyData, selectedHabit]);
 
 
 
-    // console.log("✅ Computed weekTotals:", totals);
-    return totals;
-  }, [habitData, selectedHabit]);
+//shape weekly data
+const shapedWeekly = useMemo(() => {
+  const safeWeeks = Array.isArray(weekTotals) ? weekTotals : [];
+  return {
+    labels: safeWeeks.map((_, i) => `Week ${i + 1}`),
+    values: safeWeeks
+  };
+}, [weekTotals]);
+
+//shape monthly data
+const shapedMonthly = useMemo(() => {
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const safeMonthly = monthlyTotals || {};
+  return {
+    labels: months,
+    values: months.map((_, idx) =>
+      safeMonthly[String(idx + 1).padStart(2, "0")]?.[selectedHabit] || 0
+    )
+  };
+}, [monthlyTotals, selectedHabit]);
+
+
+
 
   return (
     <div className="graphDisplay">
       {view === 'daily' && (
-        <ProgressGraph scores={habitData} selectedHabit={selectedHabit} />
+        <ProgressGraph data={shapedDaily} selectedHabit={selectedHabit} />
       )}
       {view === 'weekly' && (
-        <ManualGraph habitData={habitData}
-        selectedHabit={selectedHabit} />
+        <ManualGraph data={shapedWeekly} selectedHabit={selectedHabit} />
       )}
       {view === 'monthly' && (
-        <MonthlyProgressGraph monthlyTotals={monthlyTotals} selectedHabit={selectedHabit} />
+        <MonthlyProgressGraph data={shapedMonthly} monthlyTotals={monthlyTotals} selectedHabit={selectedHabit} />
       )}
     </div>
   );
 }
-
-
-
-
-
-
-
-
 

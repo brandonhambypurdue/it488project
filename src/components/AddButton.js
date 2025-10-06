@@ -36,7 +36,7 @@ export default function AddButton({ onAddHabit }) {
             <div className="group-title">Mental Health habits</div>
             <div className="option" role="menuitem" tabIndex={0} onClick={() => handleAdd('meditation', '🧘 Meditation')}>Meditation</div>
             <div className="option" role="menuitem" tabIndex={0} onClick={() => handleAdd('journaling', '📓 Journaling')}>Journaling</div>
-            <div className="option" role="menuitem" tabIndex={0} onClick={() => handleAdd('reflection', '🪞 Self reflection')}>Self reflection</div>
+            <div className="option" role="menuitem" tabIndex={0} onClick={() => handleAdd('self_reflection', '🪞 Self reflection')}>Self reflection</div>
           </div>
 
           <div className="group" role="group" aria-label="Physical Health habits">
@@ -50,7 +50,7 @@ export default function AddButton({ onAddHabit }) {
 
           <div className="group">
             <div className="group-title">Lets break a habit</div>
-            <div className="option" role="menuitem" tabIndex={0} onClick={() => handleAdd('break', '🛑 Break Habit')}>Break Habit</div>
+            <div className="option" role="menuitem" tabIndex={0} onClick={() => handleAdd('lets_break_a_habit', '🛑 Break Habit')}>Lets break a habit</div>
           </div>
         </div>
       )}

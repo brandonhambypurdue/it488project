@@ -1,53 +1,11 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import './ProgressPlot.css';
 
-export default function ProgressGraph({ scores = [], selectedHabit }) {
-  const toKey = str => String(str || '').trim().toLowerCase().replace(/\s+/g, '_');
-  const selKey = toKey(selectedHabit);
+export default function ProgressGraph({ data, selectedHabit }) {
+  const { labels = [], values = [] } = data || {};
+  const maxValue = Math.max(...values, 1);
+  const avg = values.reduce((a, b) => a + b, 0) / values.length;
 
-  const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
-
-  const rowToDate = (r) => {
-    const id = Number(r.day_id);
-    if (Number.isFinite(id) && id >= 10_000_000) {
-      const s = String(id);
-      return new Date(`${s.slice(0,4)}-${s.slice(4,6)}-${s.slice(6,8)}`);
-    }
-    const m = Number(r.month);
-    const d = Number(r.day_of_month ?? r.day);
-    if (Number.isFinite(m) && Number.isFinite(d)) {
-      const y = new Date().getFullYear();
-      return new Date(y, m - 1, d);
-    }
-    return null;
-  };
-
-  const weekdayFromDate = (date) => {
-    const monIdx = (date.getDay() + 6) % 7;
-    return days[monIdx];
-  };
-
-  const selectedHabitMap = useMemo(() => {
-    const map = {};
-    for (const row of scores) {
-      const dt = rowToDate(row);
-      const dayKey = dt ? weekdayFromDate(dt) : null;
-      if (!dayKey) continue;
-
-      const value = row[selKey];
-      if (value === null || value === undefined) continue;
-
-      const prev = map[dayKey];
-      if (!prev || dt > prev.__date) {
-        map[dayKey] = { __date: dt, value };
-      }
-    }
-    return map;
-  }, [scores, selKey]);
-
-  const maxValue = Math.max(...days.map(day => selectedHabitMap[day]?.value ?? 0), 1);
-
-  // 🔥 Color gradient based on value
   const getBarColor = (val) => {
     const ratio = val / maxValue;
     if (ratio <= 0.5) {
@@ -59,26 +17,56 @@ export default function ProgressGraph({ scores = [], selectedHabit }) {
     }
   };
 
+  const bestValue = Math.max(...values);
+  const trendArrows = values.map((val, i) => {
+    if (i === 0) return '';
+    const prev = values[i - 1];
+    if (val > prev) return '⬆️';
+    if (val < prev) return '⬇️';
+    return '➡️';
+  });
+
   return (
     <div className='plotHolder'>
       <h4>Daily Progress for {selectedHabit}</h4>
+
+      {/* 📊 Average Line */}
+      <div
+  className='averageLine'
+  style={{ bottom: `${(avg / maxValue) * 100}%` }}
+  title={`📊 Daily Avg: ${avg.toFixed(1)} hrs`}
+>
+  <span className='averageLabel'>{avg.toFixed(1)}</span>
+</div>
+
+
+
       <div className='progressBars'>
-        {days.map((day) => {
-          const value = selectedHabitMap[day]?.value ?? 0;
+        {labels.map((label, i) => {
+          const value = values[i] ?? 0;
           const height = `${(value / maxValue) * 17}vw`;
           const color = getBarColor(value);
+          const isBest = value === bestValue;
 
           return (
-            <div key={day} className='barContainer'>
+            <div key={label} className='barContainer'>
+              {/* ⬆️⬇️➡️ Trend Arrow */}
+              <div className='trendArrow'>{trendArrows[i]}</div>
+
+              {/* Bar Value */}
               <div className='barValue'>{value}</div>
-              <div
-                className='progressBar'
-                style={{ height, backgroundColor: color }}
-                title={`${day}: ${value}`}
-              />
-              <h5 className='dayLabel'>
-                {day.charAt(0).toUpperCase() + day.slice(1)}
-              </h5>
+
+              {/* Bar anchored to bottom */}
+              <div className='barAnchor'>
+                <div
+                  className={`progressBar ${isBest ? 'bestWeek' : ''}`}
+                  style={{ height, backgroundColor: color }}
+                  title={isBest ? `🏆 Best day: ${value} hrs!` : `${label}: ${value} hrs`}
+                />
+              </div>
+
+              {/* Day Label */}
+              <h5 className='dayLabel'>{label}</h5>
             </div>
           );
         })}

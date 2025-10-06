@@ -63,14 +63,14 @@ export default function YearlyProgressGraph({ monthlyTotals = {}, selectedHabit 
           y1={height - bottomPad}
           x2={width - padding}
           y2={height - bottomPad}
-          stroke="#ccc"
+          stroke="#000000ff"
         />
         <line
           x1={padding}
           y1={topPad}
           x2={padding}
           y2={height - bottomPad}
-          stroke="#ccc"
+          stroke="#000000ff"
         />
 
         {/* Horizontal gridlines + Y labels */}
@@ -89,9 +89,9 @@ export default function YearlyProgressGraph({ monthlyTotals = {}, selectedHabit 
               <text
                 x={padding - 10}
                 y={y + 4}
-                fontSize="10"
+                fontSize="12"
                 textAnchor="end"
-                fill="#666"
+                fill="#000000ff"
               >
                 {Math.round(yVal)}
               </text>
@@ -118,7 +118,7 @@ export default function YearlyProgressGraph({ monthlyTotals = {}, selectedHabit 
         </text>
 
         {/* Line path */}
-        <path d={path} stroke="#4caf50" strokeWidth="3" fill="none" />
+        <path d={path} stroke="#4caf50" strokeWidth="4" fill="none" />
 
         {/* Points */}
         {scaledPoints.map((p, i) => (
@@ -145,7 +145,7 @@ export default function YearlyProgressGraph({ monthlyTotals = {}, selectedHabit 
             key={`label-${i}`}
             x={p.x}
             y={height - bottomPad + 20}
-            fontSize="12"
+            fontSize="18"
             textAnchor="middle"
           >
             {p.label}
@@ -158,7 +158,7 @@ export default function YearlyProgressGraph({ monthlyTotals = {}, selectedHabit 
             key={`value-${i}`}
             x={p.x}
             y={p.y - 10}
-            fontSize="10"
+            fontSize="14"
             textAnchor="middle"
             fill="#333"
           >

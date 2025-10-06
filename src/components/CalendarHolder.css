@@ -47,6 +47,7 @@ border-radius: 1vw;
     position: relative;
     text-align: center;
     color: #555;
+    padding-top: 1vh;
 
 }
 
@@ -89,24 +90,26 @@ border-radius: 1vw;
   color: gold;
 }
 
- .monthsHolder {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1rem;
-  border-radius: 1vw;
-}
+
 
 .weeksHolder {
-    max-height: 20vw;
-    padding-top: 4vw;
+    max-height: 24.5vw;
+    padding-top: 4.5vw;
     width:34vw;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2vh;
+    overflow: scroll;
+    position: relative;
+    top: 1vh;
     
 }
 
+.weeksHolder::-webkit-scrollbar{
+ display: none;
+ position: relative;
+
+}
 
 .monthsHolder {
   overflow: scroll;
@@ -114,7 +117,13 @@ border-radius: 1vw;
   position: relative;
   width: 34vw;
   left: .15vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  border-radius: 1vw;
 }
+ 
 .monthsHolder::-webkit-scrollbar{
 display: none;
 position: relative;
@@ -126,14 +135,16 @@ position: relative;
   border: 1px solid #ddd;
   padding: 1rem;
   border-radius: 6px;
-  flex: 1 1 calc(25% - 1rem);
+  flex: 1 1 calc(30% - 1rem);
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   padding-top: 1vw;
   border-radius: 1vw;
- 
+  position: relative;
+  height: 14vw;
+  padding-right: .5vw;
 }
 
-.week1,.week2,.week3,.week4,.week5{
+.week1,.week2,.week3,.week4,.week5,.averageCard{
   background-color: #55555529;
   background-color: rgba(190, 190, 190, 0.339);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.293);
@@ -142,17 +153,18 @@ position: relative;
   left: .5vw;
   bottom: 3.25vw;
   border-radius: 1vw;
+  height: 9vw;
+  width: 16vw;
+ 
+
   
 }
-
-
-
-.Month {
-    position: relative;
-    bottom: .7vw;
-    height: 11vw;
-    padding-right: .5vw;
+.weekly-summary h4 {
+  font-size: 1vw;
+  width: 8vw;
 }
+
+
 
 .percentages {
   display: flex;

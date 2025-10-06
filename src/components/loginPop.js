@@ -7,31 +7,34 @@ function Login({ onLogin }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError('');
 
-    try {
-      const res = await axios.post('http://localhost:5000/api/login', {
-        username,
-        password
-      });
+  try {
+    const res = await axios.post('http://localhost:5000/api/login', {
+      username,
+      password,
+    });
 
-      if (res.data.success) {
-        const habits = Array.isArray(res.data.habits) ? res.data.habits : [];
-        onLogin(username, habits,password);
-  
-      } else {
-        setError(res.data.message || "Login failed.");
-      }
-    } catch (err) {
-      setError("Server error or invalid credentials.");
-      console.error("Login error:", err);
-    } finally {
-      setLoading(false);
+    console.log("✅ /api/login response:", res.data);
+
+    if (res.data.success && res.data.username) {
+      onLogin(res.data.username, password); // ✅ just pass credentials
+    } else {
+      setError(res.data.message || "Login failed.");
     }
-  };
+  } catch (err) {
+    setError("Server error or invalid credentials.");
+    console.error("Login error:", err.response?.data || err);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
 
   return (
     <div className="loginWrapper">
