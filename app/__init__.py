@@ -1,32 +1,31 @@
-# Imports the Flask class needed to communicate with React and Griffin's database.
+# Imports needed.
 from flask import Flask
- # Enables cross-origin requests from React.
-from flask_cors import CORS  
+from flask_cors import CORS
+from data.database import Session
 
-# Defines a function that sets up and returns the Flask app.
+# Application factory.
 def create_app():
-    # Creates a new Flask app instance.
+    # Create Flask app and enable CORS
     app = Flask(__name__)
-
-    # Enable CORS so React (running on a different port) can talk to Flask.
     CORS(app)
 
-    # Imports the 'main' blueprint from the routes module.
-    # So routes are organized in a separate file.
-    from .routes import main
+# Registers blueprints.
+    from app.routes    import main       as main_bp
+    from app.habits    import habits_bp
+    from app.reminders import reminders_bp
 
-   # Registers the main routes blueprint 
-    from .routes import main                          
-    app.register_blueprint(main)                      
-
-    # Registers the habits blueprint.
-    from .habits import habits_bp                      
-    app.register_blueprint(habits_bp)  
-
-    # Registers the reminders blueprint.
-    from .reminders import reminders_bp            
+    app.register_blueprint(main_bp)
+    app.register_blueprint(habits_bp)
     app.register_blueprint(reminders_bp)
 
-    # Returns the configured Flask app so it can be run.
-    return app
+# Teardown handler: remove SQLAlchemy session after each request
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        Session.remove()
+        
 
+    for rule in app.url_map.iter_rules():
+        print(rule)
+
+# Return configured app instance
+    return app

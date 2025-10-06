@@ -1,11 +1,12 @@
-# Imports necessary tools from Flask and Griffin's database setup.
-# The Blueprint organizes routes; jsonify formats data as JSON.
-from flask import Blueprint, jsonify, request
-from data.database import DATABASE, USERS, HABITS
-from log.log import logger
+# Imports needed.
+from flask import Blueprint, jsonify
 
-# Makes reminders blueprint to store reminder routes.
+# Blueprint setup for reminders endpoints.
 reminders_bp = Blueprint("reminders_bp", __name__)
 
-# Creates a database instance so data can be queried.
-db = DATABASE("data/database.db")
+# route for reminders popup. GET /api/reminders
+# Returns a JSON list of reminders.
+@reminders_bp.route("/api/reminders", methods=["GET"])
+def get_reminders():
+# Stub implementation until reminders are added
+    return jsonify({"reminders": []}), 200
