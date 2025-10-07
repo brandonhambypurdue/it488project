@@ -1,32 +1,50 @@
 import React from 'react';
 import './ProgressPlot.css';
 
-export default function WeeklyProgressGraph({ scores, selectedHabit }) {
-  // Group scores by week number
-  const weekMap = scores.reduce((acc, entry) => {
-    const week = entry.week || 1; // default to week 1 if missing
-    const value = entry[selectedHabit] ?? 0;
+export default function ManualGraph({ data, selectedHabit }) {
+  const maxValue = Math.max(...data.values, 1);
+  const avg = data.values.reduce((a, b) => a + b, 0) / data.values.length;
+  const bestValue = Math.max(...data.values);
 
-    if (!acc[week]) acc[week] = 0;
-    acc[week] += value;
-
-    return acc;
-  }, {});
-
-  // Ensure we have 4 weeks, even if some are missing
-  const weekTotals = [1, 2, 3, 4].map(week => weekMap[week] || 0);
-  const maxValue = Math.max(...weekTotals, 1); // avoid divide-by-zero
+  const getBarColor = (val) => {
+    const ratio = val / maxValue;
+    if (ratio <= 0.5) {
+      const g = Math.round(255 * (ratio / 0.5));
+      return `rgb(255, ${g}, 0)`; // red → yellow
+    } else {
+      const r = Math.round(255 * (1 - (ratio - 0.5) / 0.5));
+      return `rgb(${r}, 255, 0)`; // yellow → green
+    }
+  };
 
   return (
-    <div className='plotHolder'>
-      <div className='progressBars'>
-        {weekTotals.map((total, index) => {
-          const height = `${(total / maxValue) * 15}vw`;
+    <div className="plotHolder">
+      <h3>{selectedHabit} Weekly Progress</h3>
+
+      {/* 📊 Average Line with Label */}
+      <div
+        className="weeklyAverageLine"
+        style={{ bottom: `${(avg / maxValue) * 74}%` }}
+        title={`📊 Weekly Avg: ${avg.toFixed(1)} hrs`}
+      >
+        <span className="averageLabel">{avg.toFixed(1)}</span>
+      </div>
+
+      <div className="progressBars">
+        {data.values.map((val, index) => {
+          const height = `${(val / maxValue) * 15}vw`;
+          const color = getBarColor(val);
+          const isBest = val === bestValue;
+
           return (
-            <div key={index} className='barContainer'>
-              <div className='barValue'>{total}</div>
-              <div className='progressBar' style={{ height }} />
-              <h5 className='dayLabel'>Week {index + 1}</h5>
+            <div key={index} className="barContainer">
+              <div className="barValue">{val}</div>
+              <div
+                className={`progressBar ${isBest ? 'bestWeek' : ''}`}
+                style={{ height, backgroundColor: color }}
+                title={isBest ? `🏆 Best week: ${val} hrs!` : `${data.labels[index]}: ${val} hrs`}
+              />
+              <h5 className="dayLabel">{data.labels[index]}</h5>
             </div>
           );
         })}
@@ -34,3 +52,4 @@ export default function WeeklyProgressGraph({ scores, selectedHabit }) {
     </div>
   );
 }
+

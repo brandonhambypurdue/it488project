@@ -39,8 +39,11 @@ In order to run the application for development and testing, you will need a cou
 <br>*Warning: DO NOT MOVE FILES OR SCRIPTS.  THIS IS ALREADY SETUP TO JUST CLONE THE MAIN BRANCH AND RUN THE ENTIRE APPLICATION FROM SPRINT 1.*
 
 ## Update Frontend and Backend Branches
-In order to update the branches for frontend and backend in the future in the event of changes.  Just use the following commands from the project folder:
+In order to update the branches for frontend and backend in the future in the event of changes.  Copy the .git folder into the frontend or backend folders.  In the backend or frontend folders use the follow commands in the CLI:
 ```
-cd frontend `(or backend)`
-git checkout Sprint1-Frontend (or adjacent branch name)
+git checkout Sprint3-Frontend
+```
+or
+```
+git checkout Sprint3-Backend
 ```

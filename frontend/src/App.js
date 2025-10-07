@@ -1,93 +1,89 @@
-// App.js
 import './App.css';
-import './components/displayDateTime.js';
 import React, { useState, useEffect } from 'react';
-import TimeButtonGroup from './components/timetrack.js';
-import AddButton from './components/additionButton.js';
 import CalendarHolder from './components/calendarholder.js';
 import HabitTracking from './components/habitList.js';
-import ProgressGraph from './components/graph.js';
 import Login from './components/loginPop.js';
 import LogoutButton from './components/LogoutButton.js';
 import GraphDisplay from './components/graphDisplay.js';
 
 function App() {
-  const [showSettings, setShowSettings] = useState(false);
-  
-  // Tracks logged-in user
   const [user, setUser] = useState(null);
-
-  // Tracks which habit is selected (default: studying)
   const [selectedHabit, setSelectedHabit] = useState('study');
   const [viewMode, setViewMode] = useState('daily');
+  const [weeklySummary, setWeeklySummary] = useState({});
+  const [dailyData, setDailyData] = useState([]);
+  const [weekTotals, setWeekTotals] = useState([]);
+  const [monthlyTotals, setMonthlyTotals] = useState({});
 
-  // Stores full habit data for the logged-in user
-  const [habitData, setHabitData] = useState([]);
-
-  // Persist login across refreshes
+  // Restore user from localStorage
   useEffect(() => {
-    const savedUser = localStorage.getItem('username');
-    if (savedUser) setUser(savedUser);
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
   }, []);
 
-  // Handle login from Login component
-  const handleLogin = (username) => {
-    localStorage.setItem('username', username);
-    setUser(username);
+  // Handle login
+  const handleLogin = (username, password) => {
+    const userObj = { username, password };
+    setUser(userObj);
+    localStorage.setItem('user', JSON.stringify(userObj));
+    console.log("👤 Logged in user:", userObj);
   };
 
-  // Handle logout and clear session
+  // Handle logout
   const handleLogout = async () => {
     try {
-      await fetch('/api/logout', {
-        method: 'POST',
-        credentials: 'include', // if using cookies/session
-      });
+      await fetch('/api/logout', { method: 'POST', credentials: 'include' });
     } catch (err) {
       console.error('Logout error:', err);
     }
-
-    localStorage.removeItem('username');
-    setUser(null);
+    localStorage.removeItem('user');
+    setUser(null); // ✅ This now triggers a full re-render
   };
-  useEffect(() => {
-  console.log('Habit Data in App:', habitData);
-}, [habitData]);
-
 
   return (
     <div className="mainPage">
       {!user ? (
-        // Show login screen only
         <Login onLogin={handleLogin} />
       ) : (
-        // Show full dashboard once logged in
         <>
           <h1 className="welcome">
-            Good afternoon, <span>{user}</span>
+            Good afternoon, <span>{user.username}</span>
           </h1>
 
-          <LogoutButton onLogout={handleLogout} />
+          {/* ✅ Always passes fresh reference */}
+          <LogoutButton onLogout={() => handleLogout()} />
 
-          <AddButton />
-          
-      <CalendarHolder
-       username={user}
-       selectedHabit={selectedHabit}
-       onHabitsFetched={setHabitData}
-       view={viewMode}
-       onViewChange={setViewMode}
-         />
-          <HabitTracking onSelectHabit={setSelectedHabit} />
-
-          <GraphDisplay
-           username={user}
-           selectedHabit={selectedHabit}
-           view={viewMode}
+          <CalendarHolder
+            user={user}
+            selectedHabit={selectedHabit}
+            view={viewMode}
+            onViewChange={setViewMode}
+            setDailyData={setDailyData}
+            setWeekTotals={setWeekTotals}
+            setMonthlyTotals={setMonthlyTotals}
+            dailyData={dailyData}
+            monthlyTotals={monthlyTotals}
+            weekTotals={weekTotals}
           />
 
+          <HabitTracking
+            onSelectHabit={setSelectedHabit}
+            selectedHabit={selectedHabit}
+          />
 
-          
+          <GraphDisplay
+            username={user.username}
+            password={user.password}
+            selectedHabitName={selectedHabit?.name}
+            selectedHabit={selectedHabit}
+            view={viewMode}
+            weeklySummary={weeklySummary}
+            dailyData={dailyData}
+            weekTotals={weekTotals}
+            monthlyTotals={monthlyTotals}
+          />
         </>
       )}
     </div>
@@ -95,3 +91,4 @@ function App() {
 }
 
 export default App;
+
