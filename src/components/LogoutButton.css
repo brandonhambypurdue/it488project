@@ -1,0 +1,12 @@
+.logoutBtn {
+    background-color: rgb(255, 0, 0);;
+    color:black;
+    border: .22vh solid;
+    border-color: rgb(0, 0, 0);
+    border-radius: 1vw;
+    position: relative;
+    left: 94vw;
+    bottom: 2vw;
+    width: 5vw;
+} 
+

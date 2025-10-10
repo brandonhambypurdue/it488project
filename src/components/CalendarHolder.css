@@ -1,0 +1,569 @@
+.calendarPage {
+width: 35.25vw;
+height: 25vw;
+background-color: #ffffff;
+position: relative;
+left: 1vw;
+top: 3.6vw;
+border: solid .5vh rgb(8, 218, 229);
+border-radius: 1vw;
+} 
+
+.calendarHolder {
+    width: 34.75vw;
+    height: 24.5vw;
+    position: relative;
+    bottom: 2.1vw;
+    left: -.1vw;
+    border-radius: 1vw;
+}
+
+.weekDaysHolder {
+  position: relative;
+  top: 1vw;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1vw;
+  padding-left: 2vh;
+  
+}
+
+.weekDaysHolder .dayDescHolder {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #757575;
+  border: solid .5vh rgb(8, 218, 229);
+  border-radius: 1vw;
+  
+}
+.dayDescHolder {
+  height: 9.5vw;
+  width: 7vw;
+  background-color: #e4e3e368;
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.702);
+}
+.dayDescHolder p {
+    position: relative;
+    text-align: center;
+    color: #555;
+    padding-top: 1vh;
+
+}
+
+.habitValue {
+  position: relative;
+  top: 1vw;
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: #0078d4;
+}
+
+.badge,.nextStep,.streak,.change {
+  color: #555;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+
+
+.randomQuote {
+  position: relative;
+  bottom: .5vw;
+  grid-column: span 4;
+  margin-top: 2rem;
+  font-style: italic;
+  color: #444;
+  text-align: center;
+  font-size: .85vw;
+  color: gold;
+}
+
+
+
+.weeksHolder {
+    max-height: 24.5vw;
+    padding-top: 4.5vw;
+    width:34vw;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2vh;
+    overflow: scroll;
+    position: relative;
+    top: 1vh;
+    
+}
+
+.weeksHolder::-webkit-scrollbar{
+ display: none;
+ position: relative;
+
+}
+
+.monthsHolder {
+  overflow: scroll;
+  max-height: 24vw;
+  position: relative;
+  width: 34vw;
+  left: .15vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  border-radius: 1vw;
+}
+ 
+.monthsHolder::-webkit-scrollbar{
+display: none;
+position: relative;
+}
+
+
+.Month {
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 6px;
+  flex: 1 1 calc(30% - 1rem);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  padding-top: 1vw;
+  border-radius: 1vw;
+  position: relative;
+  height: 14vw;
+  padding-right: .5vw;
+}
+
+.week1,.week2,.week3,.week4,.week5,.averageCard{
+  background-color: #55555529;
+  background-color: rgba(190, 190, 190, 0.339);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.293);
+  padding: 2vh;
+  position: relative;
+  left: .5vw;
+  bottom: 3.25vw;
+  border-radius: 1vw;
+  max-height: 9vw;
+  height: 9vw;
+  width: 16vw;
+  display: flex;
+   justify-content: space-between;
+     flex-direction: column;
+
+
+}
+
+.motivationMsg
+{
+  height: 2vw;
+  max-height: 2vw;
+}
+
+.cardFooter{
+  text-align: center;
+  position: static;
+}
+.addDayInfo {
+  position: static;
+  top: 1vw;
+  left: .15vw;
+  margin-top: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 1vw;
+  cursor: pointer;
+}
+
+
+.weekly-summary h4 {
+  font-size: 1vw;
+  width: 8vw;
+}
+
+
+
+.percentages {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.progressBorder {
+  height: 20px;
+   background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+}
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #81c784);
+  transition: width 0.5s ease;
+
+}
+
+
+
+@media (max-width:1920px)  {
+.weekDaysHolder {
+  gap: 1vw;
+
+}
+h4 {
+  font-size: 1.25vw;
+}
+h3 {
+    font-size: 1.25vw;
+    position: relative;
+    bottom: 1vw;
+  }
+.addDayInfo {
+  top: 3.5vw;
+  left: .15vw;
+  
+}
+.monthsHolder {
+  max-width: 35vw;
+  max-height: 22vw;
+  overflow: scroll;
+}
+.Month {
+  width: 5vw;
+  height: 12vw;
+}
+h5 {
+  font-size: 1vw
+}
+
+.randomQuote {
+  bottom: 0vw;
+  font-size: 1vw;
+  color: #ffffff;
+}
+
+};
+@media (max-width :1440px) {
+h3 {
+  font-size: 1.25vw;
+}
+
+
+.weekDaysHolder {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2vw;
+  padding-left: 2vh;
+}
+
+.weekDaysHolder .dayDescHolder {
+  height: 6vw;
+}
+
+.dayDescHolder p {
+    top: 1.5vw;
+
+}
+
+
+.addDayInfo {
+  top: 2.75vw;
+  left: .15vw;
+  
+}
+
+.randomQuote {
+  
+  bottom: 2.25vw;
+  
+}
+
+.weeksHolder, .monthsHolder {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  border-radius: 1vw;
+}
+
+.monthsHolder {
+  max-width: 35vw;
+  max-height: 22vw;
+  overflow: scroll;
+}
+
+.weeksHolder {
+    height: 20vw;
+    padding-top: 1vw;
+}
+
+
+
+.week1, .week2, .week3, .week4,
+.Month {
+  width: 5vw;
+ 
+}
+.Month {
+    position: relative;
+    bottom: .7vw;
+    height: 10vw;
+   
+}
+ h5 {
+  font-size: 1vw;
+}
+
+.percentages {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.progressBorder {
+  height: 10px;
+  background-color: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  bottom: .75vw;
+}
+}
+@media (max-width: 1150px) {
+  h3 {
+  font-size: 1.25vw;
+}
+
+
+.weekDaysHolder {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2vw;
+  padding-left: 2vh;
+}
+
+.weekDaysHolder .dayDescHolder {
+  height: 6vw;
+}
+
+.dayDescHolder p {
+    top: 1.5vw;
+
+}
+
+
+.addDayInfo {
+  top: .25vw;
+  left: .15vw;
+  height: 2vw;
+  overflow: hidden;
+}
+
+.randomQuote {
+  
+  bottom: 1vw;
+  
+}
+
+.weeksHolder, .monthsHolder {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  border-radius: 1vw;
+}
+
+.monthsHolder {
+  max-width: 35vw;
+  max-height: 22vw;
+  overflow: scroll;
+}
+
+.weeksHolder {
+    height: 20vw;
+    padding-top: 1vw;
+}
+}
+@media (max-width : 1024px) {
+.calendarPage {
+
+left: 1vw; 
+top: 4.25vw;
+
+} 
+
+
+h3 {
+  font-size: 1.25vw;
+  position: relative;
+  bottom: 2vw;
+}
+
+
+.weekDaysHolder .dayDescHolder {
+  height: 5vw;
+}
+
+.dayDescHolder p {
+    top: .5vw;
+    font-size: 1.25vw;
+
+}
+
+
+.addDayInfo {
+  top: -1.25vw;
+  left: .15vw;
+  max-height: 2.5vw;
+  font-size: 1.25vw;
+  overflow: hidden;
+  
+}
+
+.randomQuote {
+  color: white;
+  bottom: 0.25vw;
+  right: 1vw;
+  
+}
+
+.monthsHolder {
+  max-width: 35vw;
+  max-height: 21vw;
+  overflow: scroll;
+}
+
+
+
+
+.week1, .week2, .week3, .week4,
+.Month {
+  width: 4vw;
+  font-size: 1vw;
+  max-width: 7vw;
+ 
+}
+.Month {
+    position: relative;
+    bottom: .7vw;
+    height: 10vw;
+}
+.Month h4 {
+  font-size: 1vw;
+}
+ h5 {
+  font-size: .8vw;
+  max-height: 2vw;
+  overflow: hidden;
+}
+
+.percentages {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  bottom: .5vw;
+}
+
+.progressBorder {
+  height: 10px;
+  background-color: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  bottom: 1.75vw;
+}
+}
+
+@media (max-width : 768px) {
+
+  .weekDaysHolder {
+  
+  gap: .5vw;
+  position: relative;
+  right: .75vw;
+ 
+}
+.weekDaysHolder .dayDescHolder {
+  height: 4vw;
+  width: 7vw;
+  padding-bottom:6vw;
+}
+
+.dayDescHolder p {
+    top: .5vw;
+    font-size: 1.25vw;
+    max-height: 2vw;
+    overflow: hidden;
+}
+
+
+.addDayInfo {
+  top: -1.75vw;
+  left: .5vw;
+  max-height: 2vw;
+  font-size: 1vw;
+  width: 5vw;
+  
+}
+
+.randomQuote {
+
+  bottom: 5vw;
+
+  
+}
+
+.monthsHolder {
+  max-width: 35vw;
+  max-height: 21vw;
+  overflow: scroll;
+}
+
+
+.weekDaysHolder div {
+  width:4vw;
+}
+
+.week1, .week2, .week3, .week4,
+.Month {
+  width: 5vw;
+  font-size: 1vw;
+  max-width: 7vw;
+ 
+}
+.Month {
+    position: relative;
+    bottom: .7vw;
+    height: 10vw;
+}
+.Month h4 {
+  font-size: 1vw;
+}
+ h5 {
+  font-size: .8vw;
+  max-height: 2vw;
+  overflow: hidden;
+}
+
+.percentages {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  bottom: .5vw;
+}
+
+.progressBorder {
+  height: 10px;
+  background-color: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  bottom: 1.75vw;
+}
+}
