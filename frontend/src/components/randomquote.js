@@ -12,22 +12,14 @@ const QUOTES = [
   "Everything you’ve ever wanted is on the other side of fear. ~ George Addair",
   "Pain is temporary. Quitting lasts forever. ~ Lance Armstrong",
   "Hard times don’t create heroes. It is during the hard times when the ‘hero’ within us is revealed ~ Bob Riley",
-  "Difficult roads always lead to beautiful destinations. ~ Zig iglar",
+  "Difficult roads always lead to beautiful destinations. ~ Zig Ziglar",
   "Your time is limited, so don’t waste it living someone else’s life. ~ Steve Jobs",
   "Perseverance is failing 19 times and succeeding the 20th. ~ Julie Andrews",
-  "You cannot fail at being yourself. ~ Wayner Dyer",
+  "You cannot fail at being yourself. ~ Wayne Dyer",
   "If you cannot do great things, do small things in a great way. ~ Napoleon Hill",
 ];
 
-export default function RandomQuote() {
-  const [quote, setQuote] = useState('');
-
-  useEffect(() => {
-    const idx = Math.floor(Math.random() * QUOTES.length);
-    setQuote(QUOTES[idx]);
-  }, []);
-
-
-
-  return <span className="weekDayFlexArea">{quote}</span>;
+export default function getRandomQuote() {
+  const idx = Math.floor(Math.random() * QUOTES.length);
+  return QUOTES[idx];
 }

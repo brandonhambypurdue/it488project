@@ -42,14 +42,22 @@ background-color:rgb(0, 154, 238);
   border: .22vh solid rgb(8,218,229);
   border-radius: 1vw;
   position: relative;
+  bottom: 1vw;
+  text-align: center;
+  padding-top: 1vh;
+
 }
 
 /* The container <div> - needed to position the dropdown content */
+
+
 .dropdown {
-  position: relative;
   display: inline-block;
-    left: 37.5vw;
-    top: 2.25vw;
+  position: relative;
+  bottom: 2vw;
+ 
+
+   
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -57,26 +65,31 @@ background-color:rgb(0, 154, 238);
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  width: 8vw;
+  width: 7.5vw;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
   border-radius: 1vw;
-  overflow: auto;
-  padding-left: 1vh;
-
-}
+  
+} 
 
 /* Links inside the dropdown */
-.dropdown-content button {
+.option {
   color: black;
   width: 7vw;
   height: 2vw;
   text-decoration: none;
   display: block;
   border-radius: 1vw;
+  text-align: center;
+  padding-top: 1.5vh;
 }
 
-.dropdown-content span{
+.option:hover {
+background-color: #0078d4;
+  color: white;
+}
+
+.group-title{
   color: black;
   width: 7vw;
   height: 1.75vw;
@@ -129,7 +142,7 @@ background-color:rgb(0, 154, 238);
   padding-top: 1vw;
   width: 25vw;
   height: 2.5vw;
-  
+  font-size: 1.5vw;
   
 
 }
@@ -193,8 +206,26 @@ background-color:rgb(0, 154, 238);
   justify-content: center;
   align-items: center;
   background-color: #f0f2f5;
+  z-index: 1;
+  filter: none;
 }
 
+
+
+.background {
+  height: 100vh;
+  width: 100vw;
+  background: url(./images/Logo.jpg);
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', sans-serif;
+  z-index: -1;
+  
+
+
+}
 
 /* Center the login form */
 .loginForm {
@@ -208,9 +239,9 @@ background-color:rgb(0, 154, 238);
   box-shadow: 0 0 20px rgba(0,0,0,0.1);
   width: 300px;
   text-align: center;
+  filter: none;
+  
 }
-
-
 
 /* Input styling */
 .loginForm input {
@@ -231,6 +262,7 @@ background-color:rgb(0, 154, 238);
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
+  margin-bottom: 2vh;
 }
 
 .loginForm button:hover {
@@ -242,18 +274,213 @@ background-color:rgb(0, 154, 238);
   color: red;
   margin-top: 0.5rem;
 }
+@media (max-width: 1920px) {
+.dropbtn {
+  text-align: center;
+  padding-bottom: 1.5vw;
+};
+h1 {
+  font-size: 1vw;
+}
+.welcome {
+  width: 25vw;
+  font-size: 2vw;
 
 
-/* .logo {
-  background-image:url('images/Logo.webp');
-  width: 27.5vw;
-  height: 20vw;
+}
+.option {
+  
+  width: 7vw;
+  height: 2vw;
+  border-radius: 1vw;
+  text-align: center;
+  padding-bottom: 1vh;
+  
+}
+
+.group-title {
+  padding-bottom: 5vh;
+}
+.dropdown-content{
+  height: 23.5vw;
+}
+}
+@media (max-width:1600px) {
+  .welcome {
+  font-size: 2vw;
+}
+.option {
+  width: 7vw;
+
+}
+
+
+.group-title {
+  font-size: .85vw;
+  padding-bottom: 5vh;
+}
+.dropdown-content{
+  height: 23.5vw;
+}
+}
+@media (max-width :1440px) {
+ html {
+  margin: 0;
+  padding: 0;
+  max-height: 50vh;
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', sans-serif;
+  background-color:rgb(0, 154, 238);
+}
+
+.welcome {
   position: relative;
-  
-  transform: scale(.25);
-  
-} */
+  left: 4vw;
+  text-align: center;
+  color:white;
+  padding-top: 1vw;
+  width: 29vw;
+  height: 2.5vw;
+  font-size: 2.25vw;
+}
+
+.mainPage {
+
+width: 100%;
+max-height: 70vh ;
+background-color:rgb(0, 154, 238);
+}
+.btn-group {
+  left: 2vw;
+  bottom: 3.5vw;
+  width: 30vw;
+  height: 2vw;
+}
 
 
-/* Dropdown Button */
-/*keep plot graph and add connections*/
+.btn {
+
+    padding-bottom: 2vw;
+}
+
+
+/****/
+
+.dropbtn {
+  font-size: .75vw;
+
+}
+
+/* The container <div> - needed to position the dropdown content */
+
+
+
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  background-color: #ffffff;
+} 
+
+/* Links inside the dropdown */
+.option {
+  color: black;
+  width: 7vw;
+  height: 2.8vw;
+  font-size: 1vw;
+  padding-bottom: 3vh;
+}
+
+.option:hover {
+background-color: #0078d4;
+  color: white;
+}
+
+.group-title{
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  height: 3vw;
+  font-size: .75vw;
+ 
+  
+}
+
+
+
+
+
+
+  /****/
+
+
+
+
+
+
+
+/*************************************/
+
+
+}
+@media (max-width: 1150px) {
+  
+}
+
+@media (max-width : 1024px) {
+ html {
+  margin: 0;
+  padding: 0;
+  max-height: 50vh;
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', sans-serif;
+  background-color:rgb(0, 154, 238);
+}
+
+.welcome {
+  position: relative;
+  left: 4vw;
+  text-align: center;
+  color:white;
+  padding-top: 1vw;
+  width: 29vw;
+  height: 2.5vw;
+  font-size: 2.25vw;
+}
+
+.mainPage {
+
+width: 100%;
+max-height: 70vh ;
+background-color:rgb(0, 154, 238);
+}
+.btn-group {
+  left: 2vw;
+  bottom: 5vw;
+  width: 30vw;
+  height: 1.5vw;
+}
+
+
+.btn {
+
+    padding-bottom: 2vw;
+}
+
+
+/****/
+
+.dropbtn {
+  font-size: 1vw;
+  padding-bottom: 1.9vw;
+  bottom: 2vw;
+}
+
+
+
+
+.group-title{
+  font-size: 1vw;
+ 
+  
+}
+}
+
