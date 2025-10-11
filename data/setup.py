@@ -60,10 +60,11 @@ def generateHabits():
     dayId = 1
     for m, days in enumerate(monthDays, start=1):
         for d in range(1, days+1):
+            # Only sleep, study, hobby are generated — everything else (including cardio) is NULL
             data.append((
                 dayId, f"{m:02d}", d,
                 randint(5,10), randint(1,8), randint(1,10),
-                None, None, None, None, None, None
+                None, None, None, None, None, None, None
             ))
             dayId += 1
     return data
@@ -79,6 +80,7 @@ for i in range(1, 6):
         sleep INTEGER CHECK(sleep >= 0),
         study INTEGER CHECK(study >= 0),
         hobby INTEGER CHECK(hobby >= 0),
+        cardio    INTEGER,
         meditation    INTEGER,
         journaling    INTEGER,
         self_reflection INTEGER,
@@ -89,10 +91,10 @@ for i in range(1, 6):
     """)
     cursor.executemany(f"""
     INSERT INTO {tbl} (
-        day_id, month, day, sleep, study, hobby,
+        day_id, month, day, sleep, study, hobby, cardio,
         meditation, journaling, self_reflection,
         stretching, hydration, lets_break_a_habit
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     """, generateHabits())
 
 conn.commit()
