@@ -17,7 +17,7 @@ def make_day_id(date_input):
     if isinstance(date_input, str):
         date_input = datetime.strptime(date_input, "%Y-%m-%d")
     start = datetime(date_input.year, 1, 1)
-    return (date_input - start).days + 2
+    return (date_input - start).days + 1
 
 @hours_bp.route("/api/hours/input", methods=["POST"])
 def input_hours():
