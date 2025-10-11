@@ -1,23 +1,25 @@
+# Imported
 import sqlite3, os
 from random import randint
+import hashing  # your internal password hashing module
 
-# Builds path to data/database.db.
+# Variables
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_FILE  = os.path.join(BASE_DIR, "database.db")
 
-# Ensures data directory exists.
+# Ensure directory exists
 os.makedirs(BASE_DIR, exist_ok=True)
 
-# Removes old DB.
+# Remove old database
 if os.path.exists(DB_FILE):
     os.remove(DB_FILE)
 
-# Connects & creates schema.
+# Connect and create schema
 conn   = sqlite3.connect(DB_FILE)
 cursor = conn.cursor()
 cursor.execute("PRAGMA foreign_keys = ON;")
 
-# Users table.
+# Users table
 cursor.execute("""
 CREATE TABLE users (
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,20 +30,30 @@ CREATE TABLE users (
 );
 """)
 
-# Seed users.
-users = [
+# Initialize the password hasher
+hasher = hashing.HASH()
+
+# Seed users (hash passwords before inserting)
+plain_users = [
     ('Test', 'User1', 'TestUser1', 'Password1234!'),
     ('Test', 'User2', 'TestUser2', 'Password1234!'),
     ('Test', 'User3', 'TestUser3', 'Password1234!'),
     ('Test', 'User4', 'TestUser4', 'Password1234!'),
     ('Test', 'User5', 'TestUser5', 'Password1234!')
 ]
+
+hashed_users = []
+for first_name, last_name, username, password in plain_users:
+    hashed_pw = hasher.createHash(password).decode('utf-8')
+    hashed_users.append((first_name, last_name, username, hashed_pw))
+
+# Insert users into database
 cursor.executemany(
     "INSERT INTO users (first_name, last_name, username, password) VALUES (?, ?, ?, ?);",
-    users
+    hashed_users
 )
 
-# Habit seeder.
+# Habit seeder
 def generateHabits():
     data = []
     monthDays = [31,28,31,30,31,30,31,31,30,31,30,31]
@@ -56,7 +68,7 @@ def generateHabits():
             dayId += 1
     return data
 
-# Creates per-user tables and seed.
+# Create per-user tables and seed habits
 for i in range(1, 6):
     tbl = f"user_{i}"
     cursor.execute(f"""
@@ -86,4 +98,4 @@ for i in range(1, 6):
 conn.commit()
 conn.close()
 
-print(f"Seeded database at {DB_FILE}")
+print(f"Seeded secure database at {DB_FILE}")

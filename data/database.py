@@ -1,79 +1,83 @@
+# Imported
 import os
-from sqlalchemy import (
-    create_engine, Column, Integer, String, CheckConstraint,
-    Table, MetaData, text
-)
+from sqlalchemy import create_engine, Column, Integer, String, CheckConstraint, Table, MetaData, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from log.log import logger
+import data.hashing as hashing
 
-# ──────────────────────────────────────────────
-#  Database Setup
-# ──────────────────────────────────────────────
-
+# Variables
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH  = os.path.join(BASE_DIR, 'database.db')
+DB_PATH = os.path.join(BASE_DIR, 'database.db')
 
-engine  = create_engine(f"sqlite:///{DB_PATH}", echo=False, future=True)
+engine = create_engine(f"sqlite:///{DB_PATH}", echo=False, future=True)
 Session = scoped_session(sessionmaker(bind=engine))
 
-Base     = declarative_base()
+Base = declarative_base()
 metadata = MetaData()
 
-# ──────────────────────────────────────────────
-#  User Model
-# ──────────────────────────────────────────────
 
+# CLASS: Represents the users table in the database. Stores user information including hashed passwords.
 class USERS(Base):
     __tablename__ = "users"
-    id         = Column(Integer, primary_key=True, autoincrement=True)
-    first_name = Column(String,  nullable=False)
-    last_name  = Column(String,  nullable=False)
-    username   = Column(String,  unique=True, nullable=False)
-    password   = Column(String,  nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
+    username = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=False)  # Stores bcrypt hash
 
-# ──────────────────────────────────────────────
-#  Database Wrapper
-# ──────────────────────────────────────────────
+
+# CLASS: Database wrapper for managing connections, queries, and user habit data.
 class DATABASE:
+    # FUNCTION: Initialize the database connection and internal hashing object.
     def __init__(self):
         try:
-           
-            self.engine   = engine
-            self.session  = Session()
+            self.engine = engine
+            self.session = Session()
             self.metadata = metadata
+            self.hashing = hashing.HASH()  # Initialize password hasher
             logger.logDatabaseChange(f"Connected to database at {DB_PATH}")
         except Exception as e:
             logger.logDatabaseError(f"Failed to initialize DATABASE: {str(e)}")
             raise
 
+    # FUNCTION: Verify user credentials using username and plaintext password.
     def loginFunction(self, username, password):
         try:
-            user = self.session.query(USERS)\
-                .filter_by(username=username, password=password)\
-                .first()
-            return bool(user)
+            user = self.session.query(USERS).filter_by(username=username).first()
+            if not user:
+                logger.logDatabaseError(f"Login failed: username '{username}' not found.")
+                return False
+
+            # Verify plaintext password against bcrypt hash
+            if self.hashing.verifyHash(password, user.password.encode('utf-8')):
+                logger.logDatabaseChange(f"User '{username}' successfully logged in.")
+                return True
+            else:
+                logger.logDatabaseError(f"Invalid password for '{username}'.")
+                return False
+
         except Exception as e:
             logger.logDatabaseError(f"Login error for '{username}': {str(e)}")
             return False
 
+    # FUNCTION: Reflect a dynamic user_<id> table for habit tracking.
     def get_user_table(self, uid):
-        """Reflect a dynamic user_<id> table."""
         table_name = f"user_{uid}"
         try:
             table = Table(
                 table_name, self.metadata,
                 Column('day_id', Integer, primary_key=True),
-                Column('month',   String, nullable=False),
-                Column('day',     Integer, nullable=False),
-                Column('sleep',          Integer, CheckConstraint("sleep >= 0")),
-                Column('study',          Integer, CheckConstraint("study >= 0")),
-                Column('hobby',          Integer, CheckConstraint("hobby >= 0")),
-                Column('meditation',     Integer),
-                Column('journaling',     Integer),
-                Column('self_reflection',Integer),
-                Column('stretching',     Integer),
-                Column('hydration',      Integer),
+                Column('month', String, nullable=False),
+                Column('day', Integer, nullable=False),
+                Column('sleep', Integer, CheckConstraint("sleep >= 0")),
+                Column('study', Integer, CheckConstraint("study >= 0")),
+                Column('hobby', Integer, CheckConstraint("hobby >= 0")),
+                Column('meditation', Integer),
+                Column('journaling', Integer),
+                Column('self_reflection', Integer),
+                Column('stretching', Integer),
+                Column('hydration', Integer),
                 Column('lets_break_a_habit', Integer),
                 autoload_with=self.engine,
                 extend_existing=True
@@ -83,26 +87,20 @@ class DATABASE:
             logger.logDatabaseError(f"Could not access table '{table_name}': {str(e)}")
             return None
 
-    # ──────────────────────────────────────────
-    #  Raw SQL Habit Retrieval
-    # ──────────────────────────────────────────
-
+    # FUNCTION: Fetch a single habit value via raw SQL.
     def getHabitValue(self, uid, day_id, column):
-        """Fetch a single habit value via raw SQL."""
         try:
             table_name = f"user_{uid}"
-            query      = text(f"SELECT {column} FROM {table_name} WHERE day_id = :day_id")
-            result     = self.session.execute(query, {"day_id": day_id}).fetchone()
+            query = text(f"SELECT {column} FROM {table_name} WHERE day_id = :day_id")
+            result = self.session.execute(query, {"day_id": day_id}).fetchone()
             logger.logDatabaseChange(f"Raw SQL result for {column}, day_id={day_id}: {result}")
             return result[0] if result else None
         except Exception as e:
-            logger.logDatabaseError(
-                f"Error retrieving '{column}' for user {uid}, day {day_id}: {str(e)}"
-            )
+            logger.logDatabaseError(f"Error retrieving '{column}' for user {uid}, day {day_id}: {str(e)}")
             return None
 
+    # FUNCTION: Fetch all core habits (sleep, study, hobby) in one query.
     def getDailyHabits(self, uid, day_id):
-        """Fetch all core habits (sleep, study, hobby) in one query."""
         try:
             table_name = f"user_{uid}"
             query = text(f"""
@@ -117,67 +115,46 @@ class DATABASE:
                 return habits
             return None
         except Exception as e:
-            logger.logDatabaseError(
-                f"Error fetching daily habits for uid={uid}, day {day_id}: {str(e)}"
-            )
+            logger.logDatabaseError(f"Error fetching daily habits for uid={uid}, day {day_id}: {str(e)}")
             return None
 
-    # ──────────────────────────────────────────
-    #  Raw SQL Habit Update
-    # ──────────────────────────────────────────
+    # FUNCTION: Update a single habit value via raw SQL.
     def updateHabitValue(self, uid, day_id, column, value):
-        """Update a single habit value via raw SQL, safely handle rowcount."""
         try:
-            table_name  = f"user_{uid}"
+            table_name = f"user_{uid}"
             update_stmt = text(f"""
                 UPDATE {table_name}
                 SET {column} = :value
                 WHERE day_id = :day_id
             """)
-            result = self.session.execute(
-                update_stmt, {"value": value, "day_id": day_id}
-            )
+            result = self.session.execute(update_stmt, {"value": value, "day_id": day_id})
             self.session.commit()
 
-           
-            try:
-                rc = result.rowcount
-            except Exception as e:
-                logger.logDatabaseError(
-                    f"rowcount access error for {table_name}: {e}"
-                )
-                rc = None
-
+            rc = getattr(result, "rowcount", None)
             if isinstance(rc, int):
                 return rc > 0
             return True
-
         except Exception as e:
-            logger.logDatabaseError(
-                f"Error updating '{column}' for user {uid}, day {day_id}: {e}"
-            )
+            logger.logDatabaseError(f"Error updating '{column}' for user {uid}, day {day_id}: {e}")
             return False
 
-    # ──────────────────────────────────────────
-    #  Create User Habit Table
-    # ──────────────────────────────────────────
+    # FUNCTION: Create a new habit tracking table for a user.
     def create_user_table(self, uid):
-        """Create a new habit tracking table for a user."""
         table_name = f"user_{uid}"
         try:
             table = Table(
                 table_name, self.metadata,
                 Column('day_id', Integer, primary_key=True),
-                Column('month',   String, nullable=False),
-                Column('day',     Integer, nullable=False),
-                Column('sleep',          Integer, CheckConstraint("sleep >= 0")),
-                Column('study',          Integer, CheckConstraint("study >= 0")),
-                Column('hobby',          Integer, CheckConstraint("hobby >= 0")),
-                Column('meditation',     Integer),
-                Column('journaling',     Integer),
-                Column('self_reflection',Integer),
-                Column('stretching',     Integer),
-                Column('hydration',      Integer),
+                Column('month', String, nullable=False),
+                Column('day', Integer, nullable=False),
+                Column('sleep', Integer, CheckConstraint("sleep >= 0")),
+                Column('study', Integer, CheckConstraint("study >= 0")),
+                Column('hobby', Integer, CheckConstraint("hobby >= 0")),
+                Column('meditation', Integer),
+                Column('journaling', Integer),
+                Column('self_reflection', Integer),
+                Column('stretching', Integer),
+                Column('hydration', Integer),
                 Column('lets_break_a_habit', Integer),
             )
             table.create(self.engine, checkfirst=True)

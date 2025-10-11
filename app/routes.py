@@ -1,12 +1,15 @@
 # Imports needed.
 from flask import Blueprint, jsonify, request
+from sqlalchemy.exc import IntegrityError
 from data.database import DATABASE, USERS
 from log.log import logger
 from datetime import datetime, timedelta
 
 # Blueprint and Database Initialization
 main = Blueprint("main", __name__)
-db   = DATABASE()
+db = DATABASE()
+
+
 # Route for login. POST /api/login.
 @main.route("/api/login", methods=["POST"])
 def login():
@@ -17,23 +20,18 @@ def login():
         if not username or not password:
             return jsonify({"success": False, "message": "Missing credentials"}), 400
 
-        user = db.session.query(USERS).filter_by(username=username).first()
-        if not user:
-            logger.logDatabaseError(f"Login failed: User '{username}' not found")
-            return jsonify({"success": False, "message": "User not found"}), 404
-
-        if user.password != password:
-            logger.logDatabaseError(f"Login failed: Incorrect password for '{username}'")
-            return jsonify({"success": False, "message": "Incorrect password"}), 401
-
- # Returns user info only; habits come from /api/daily, /api/weekly, /api/monthly.
-        return jsonify({"success": True, "username": username}), 200
+        # Verify credentials
+        if db.loginFunction(username, password):
+            return jsonify({"success": True, "username": username}), 200
+        else:
+            return jsonify({"success": False, "message": "Invalid username or password"}), 401
 
     except Exception as e:
         logger.logFlaskError(f"Exception in /api/login: {e}")
         return jsonify({"success": False, "message": "Internal server error"}), 500
-    
- # Route to GET /api/test_db.
+
+
+# Route to GET /api/test_db.
 @main.route("/api/test_db", methods=["GET"])
 def test_db():
     import os, traceback
@@ -61,7 +59,7 @@ def test_db():
             })
 
         test_user = db.session.query(USERS).filter_by(username="TestUser1").first()
-        results["test_user_found"]    = bool(test_user)
+        results["test_user_found"] = bool(test_user)
         results["test_user_password"] = test_user.password if test_user else None
 
     except Exception as e:
@@ -70,25 +68,28 @@ def test_db():
 
     return jsonify(results), 200
 
+
+# Route for user registration. POST /api/register.
 @main.route("/api/register", methods=["POST"])
 def register_user():
     try:
         data = request.get_json(force=True)
         first_name = data.get("first_name")
-        last_name  = data.get("last_name")
-        username   = data.get("username")
-        password   = data.get("password")
+        last_name = data.get("last_name")
+        username = data.get("username")
+        password = data.get("password")
 
-       
         if not all([first_name, last_name, username, password]):
             return jsonify({"error": "Missing required fields"}), 400
 
-       
+        # Hash the password before storing
+        hashed_password = db.hashing.createHash(password.strip()).decode("utf-8")
+
         new_user = USERS(
             first_name=first_name.strip(),
             last_name=last_name.strip(),
             username=username.strip(),
-            password=password.strip()
+            password=hashed_password
         )
         db.session.add(new_user)
         db.session.commit()
@@ -105,4 +106,5 @@ def register_user():
         return jsonify({"error": "Username already exists"}), 409
     except Exception as e:
         db.session.rollback()
+        logger.logFlaskError(f"Exception in /api/register: {e}")
         return jsonify({"error": str(e)}), 500
