@@ -275,7 +275,7 @@ const handleSubmit = async () => {
         ) / habitsArray.length;
 
         return (
-          <div className="dayCard weekly-summary">
+          <div className="dayCard_weekly-summary">
             <h4>Weekly Summary</h4>
             <div className="dayDescHolder">
               <p>

@@ -8,7 +8,6 @@ top: 3.6vw;
 border: solid .5vh rgb(8, 218, 229);
 border-radius: 1vw;
 } 
-
 .calendarHolder {
     width: 34.75vw;
     height: 24.5vw;
@@ -17,17 +16,14 @@ border-radius: 1vw;
     left: -.1vw;
     border-radius: 1vw;
 }
-
 .weekDaysHolder {
   position: relative;
-  top: 1vw;
+  top: 1vw;  
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1vw;
   padding-left: 2vh;
-  
 }
-
 .weekDaysHolder .dayDescHolder {
   display: block;
   margin-top: 0.5rem;
@@ -50,7 +46,6 @@ border-radius: 1vw;
     padding-top: 1vh;
 
 }
-
 .habitValue {
   position: relative;
   top: 1vw;
@@ -58,14 +53,10 @@ border-radius: 1vw;
   font-weight: bold;
   color: #0078d4;
 }
-
 .badge,.nextStep,.streak,.change {
   color: #555;
   font-family:Arial, Helvetica, sans-serif;
 }
-
-
-
 .randomQuote {
   position: relative;
   bottom: .5vw;
@@ -77,9 +68,6 @@ border-radius: 1vw;
   font-size: .85vw;
   color: gold;
 }
-
-
-
 .weeksHolder {
     max-height: 24.5vw;
     padding-top: 4.5vw;
@@ -92,13 +80,19 @@ border-radius: 1vw;
     top: 1vh;
     
 }
-
 .weeksHolder::-webkit-scrollbar{
  display: none;
  position: relative;
 
 }
-
+.dayCard_weekly-summary{
+  position: relative;
+  top: 0vw;
+}
+.dayCard_weekly-summary h4{
+  font-size: 1vw;
+  width: 8vw;
+}
 .monthsHolder {
   overflow: scroll;
   max-height: 24vw;
@@ -111,13 +105,10 @@ border-radius: 1vw;
   margin-top: 1rem;
   border-radius: 1vw;
 }
- 
 .monthsHolder::-webkit-scrollbar{
 display: none;
 position: relative;
 }
-
-
 .Month {
   background-color: white;
   border: 1px solid #ddd;
@@ -131,7 +122,6 @@ position: relative;
   height: 14vw;
   padding-right: .5vw;
 }
-
 .week1,.week2,.week3,.week4,.week5,.averageCard{
   background-color: #55555529;
   background-color: rgba(190, 190, 190, 0.339);
@@ -145,18 +135,16 @@ position: relative;
   height: 9vw;
   width: 16vw;
   display: flex;
-   justify-content: space-between;
-     flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
 
 
 }
-
 .motivationMsg
 {
   height: 2vw;
   max-height: 2vw;
 }
-
 .cardFooter{
   text-align: center;
   position: static;
@@ -174,22 +162,16 @@ position: relative;
   border-radius: 1vw;
   cursor: pointer;
 }
-
-
 .weekly-summary h4 {
   font-size: 1vw;
   width: 8vw;
 }
-
-
-
 .percentages {
   display: flex;
   justify-content: space-between;
   font-size: 0.8rem;
   margin-bottom: 0.5rem;
 }
-
 .progressBorder {
   height: 20px;
    background: #eee;
@@ -203,13 +185,9 @@ position: relative;
   transition: width 0.5s ease;
 
 }
-
-
-
 @media (max-width:1920px)  {
 .weekDaysHolder {
   gap: 1vw;
-
 }
 h4 {
   font-size: 1.25vw;
@@ -218,6 +196,9 @@ h3 {
     font-size: 1.25vw;
     position: relative;
     bottom: 1vw;
+  }
+.dayDescHolder {
+    height: 9vw;
   }
 .addDayInfo {
   top: 3.5vw;
@@ -236,49 +217,191 @@ h3 {
 h5 {
   font-size: 1vw
 }
-
 .randomQuote {
   bottom: 0vw;
   font-size: 1vw;
   color: #ffffff;
 }
+.dayCard_weekly-summary h4 {
+  font-size: 1vw;
+  width: 8vw;
+  
+  
+}
+.dayCard_weekly-summary{
+  position: relative;
+  
+}
+}
+@media (max-width:1600px) {
+.calendarHolder {
+    width: 34.75vw;
+    height: 24.5vw;
+    position: relative;
+    bottom: 2.1vw;
+    left: -.1vw;
+    border-radius: 1vw;
+    max-height: 24vw;
+    overflow: scroll;
+}
+.weekDaysHolder {
+  position: relative;
+  top: 1vw;  
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1vw;
+  padding-left: 2vh;
+  max-height: 22vw;
+  overflow: scroll;
+}
+.dayDescHolder p {
+  padding-bottom: .25vh;
+}
+.dayDescHolder {
+  height: 14vw;
+}
+.motivationMsg
+{
+  height: 4vw;
+  max-height: 4vw;
+}
+.randomQuote {
+  position: relative;
+  bottom: 1vw;
+  grid-column: span 4;
+  margin-top: 2rem;
+  font-style: italic;
+  color: #444;
+  text-align: center;
+  font-size: 1vw;
+  color: gold;
+}
 
-};
+.weeksHolder::-webkit-scrollbar{
+ display: none;
+ position: relative;
+
+}
+.monthsHolder {
+  overflow: scroll;
+  max-height: 24vw;
+  position: relative;
+  width: 34vw;
+  left: .15vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  border-radius: 1vw;
+}
+.monthsHolder::-webkit-scrollbar{
+display: none;
+position: relative;
+}
+.Month {
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 6px;
+  flex: 1 1 calc(30% - 1rem);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  padding-top: 1vw;
+  border-radius: 1vw;
+  position: relative;
+  height: 20vw;
+  padding-right: .5vw;
+}
+.week1,.week2,.week3,.week4,.week5{
+  background-color: #55555529;
+  background-color: rgba(190, 190, 190, 0.339);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.293);
+  padding: 2vh;
+  position: relative;
+  left: .5vw;
+  bottom: 3.25vw;
+  border-radius: 1vw;
+  max-height: 9vw;
+  height: 9vw;
+  width: 16vw;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+
+}
+.dayCard_weekly-summary {
+  position: relative;
+  top: .25vw;
+ 
+}
+.dayCard_weekly-summary h4 {
+  font-size: 1vw;
+  width: 8vw;
+}
+.dayCard{
+  padding-bottom: 2vh;
+}
+.weeksHolder {
+    max-height: 24.5vw;
+    padding-top: 4.5vw;
+    width:34vw;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2vh;
+    overflow: scroll;
+    position: relative;
+    top: 1vh;
+    
+}
+.week1,.week2,.week3,.week4,.week5,.averageCard{
+  background-color: #55555529;
+  background-color: rgba(190, 190, 190, 0.339);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.293);
+  padding: 2vh;
+  position: relative;
+  left: .5vw;
+  bottom: 3.25vw;
+  border-radius: 1vw;
+  max-height: 12vw;
+  height: 12vw;
+  width: 16vw;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+
+}
+}
 @media (max-width :1440px) {
 h3 {
   font-size: 1.25vw;
 }
-
-
-.weekDaysHolder {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2vw;
-  padding-left: 2vh;
+.weekDaysHolder{
+  max-height: 25vw;
 }
-
 .weekDaysHolder .dayDescHolder {
-  height: 6vw;
+  height: 17vw;
 }
-
+.dayCard {
+  padding-bottom: 1.25vw;
+  height: 19vw;
+}
+.dayDescHolder {
+  width: 7.35vw;
+}
 .dayDescHolder p {
-    top: 1.5vw;
-
+    top: 0vw;
+    width: 7vw;
 }
-
-
 .addDayInfo {
   top: 2.75vw;
   left: .15vw;
   
 }
-
 .randomQuote {
-  
-  bottom: 2.25vw;
-  
+  font-size: 1.25vw;
+  bottom: 2vw;
 }
-
 .weeksHolder, .monthsHolder {
   display: flex;
   flex-wrap: wrap;
@@ -286,10 +409,9 @@ h3 {
   margin-top: 1rem;
   border-radius: 1vw;
 }
-
 .monthsHolder {
   max-width: 35vw;
-  max-height: 22vw;
+  max-height: 23vw;
   overflow: scroll;
 }
 
@@ -297,18 +419,18 @@ h3 {
     height: 20vw;
     padding-top: 1vw;
 }
-
-
-
-.week1, .week2, .week3, .week4,
-.Month {
-  width: 5vw;
+.week1, .week2, .week3, .week4,.week5,.averageCard
+{
+  width: 15vw;
+  height: 17vw;
+  max-height: 17vw;
+  top: 0vw;
  
 }
 .Month {
     position: relative;
     bottom: .7vw;
-    height: 10vw;
+    height: 22vw;
    
 }
  h5 {
@@ -332,41 +454,50 @@ h3 {
 }
 }
 @media (max-width: 1150px) {
+.calendarPage{
+  top: 4.25vw;
+}
+
   h3 {
   font-size: 1.25vw;
 }
-
-
 .weekDaysHolder {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2vw;
+  gap: 1vw;
   padding-left: 2vh;
-}
+  row-gap: 4vw;
+  padding-bottom: 0vw;
 
+}
 .weekDaysHolder .dayDescHolder {
-  height: 6vw;
+  height: 20vw;
 }
-
 .dayDescHolder p {
-    top: 1.5vw;
-
+    top: 0vw;
+    height: 3vw;
 }
-
-
+.motivationMsg {
+  height: 5vw;
+  max-height: 5vw;
+ 
+}
+.cardFooter {
+  padding-top: 2.5vw;
+}
+.streakBadge {
+  height: 1vw;
+  padding-top: 1vw;
+}
 .addDayInfo {
   top: .25vw;
   left: .15vw;
   height: 2vw;
   overflow: hidden;
 }
-
 .randomQuote {
-  
-  bottom: 1vw;
-  
+  bottom: 5vw;
 }
-
 .weeksHolder, .monthsHolder {
   display: flex;
   flex-wrap: wrap;
@@ -374,196 +505,32 @@ h3 {
   margin-top: 1rem;
   border-radius: 1vw;
 }
-
 .monthsHolder {
   max-width: 35vw;
   max-height: 22vw;
   overflow: scroll;
 }
-
 .weeksHolder {
-    height: 20vw;
+    height: 25vw;
     padding-top: 1vw;
+    max-height: 27vw;
 }
+.dayCard_weekly-summary p {
+  font-size: 1.2vw;
+  padding-bottom: 7vw;
 }
-@media (max-width : 1024px) {
-.calendarPage {
-
-left: 1vw; 
-top: 4.25vw;
-
-} 
-
-
-h3 {
-  font-size: 1.25vw;
-  position: relative;
-  bottom: 2vw;
-}
-
-
-.weekDaysHolder .dayDescHolder {
-  height: 5vw;
-}
-
-.dayDescHolder p {
-    top: .5vw;
-    font-size: 1.25vw;
+.dayCard_weekly-summary strong {
+  height: 1vw;
 
 }
-
-
-.addDayInfo {
-  top: -1.25vw;
-  left: .15vw;
-  max-height: 2.5vw;
-  font-size: 1.25vw;
-  overflow: hidden;
-  
-}
-
-.randomQuote {
-  color: white;
-  bottom: 0.25vw;
-  right: 1vw;
-  
-}
-
-.monthsHolder {
-  max-width: 35vw;
-  max-height: 21vw;
-  overflow: scroll;
-}
-
-
-
-
-.week1, .week2, .week3, .week4,
-.Month {
-  width: 4vw;
-  font-size: 1vw;
-  max-width: 7vw;
- 
+.week1,.week2,.week3,.week4,.week5,.averageCard {
+  height: 22vw;
+  max-height: 22vw;
+  top: -1.1vw;
 }
 .Month {
-    position: relative;
-    bottom: .7vw;
-    height: 10vw;
-}
-.Month h4 {
+  height: 22vw;
   font-size: 1vw;
 }
- h5 {
-  font-size: .8vw;
-  max-height: 2vw;
-  overflow: hidden;
 }
 
-.percentages {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  margin-bottom: 0.5rem;
-  position: relative;
-  bottom: .5vw;
-}
-
-.progressBorder {
-  height: 10px;
-  background-color: #eee;
-  border-radius: 5px;
-  overflow: hidden;
-  position: relative;
-  bottom: 1.75vw;
-}
-}
-
-@media (max-width : 768px) {
-
-  .weekDaysHolder {
-  
-  gap: .5vw;
-  position: relative;
-  right: .75vw;
- 
-}
-.weekDaysHolder .dayDescHolder {
-  height: 4vw;
-  width: 7vw;
-  padding-bottom:6vw;
-}
-
-.dayDescHolder p {
-    top: .5vw;
-    font-size: 1.25vw;
-    max-height: 2vw;
-    overflow: hidden;
-}
-
-
-.addDayInfo {
-  top: -1.75vw;
-  left: .5vw;
-  max-height: 2vw;
-  font-size: 1vw;
-  width: 5vw;
-  
-}
-
-.randomQuote {
-
-  bottom: 5vw;
-
-  
-}
-
-.monthsHolder {
-  max-width: 35vw;
-  max-height: 21vw;
-  overflow: scroll;
-}
-
-
-.weekDaysHolder div {
-  width:4vw;
-}
-
-.week1, .week2, .week3, .week4,
-.Month {
-  width: 5vw;
-  font-size: 1vw;
-  max-width: 7vw;
- 
-}
-.Month {
-    position: relative;
-    bottom: .7vw;
-    height: 10vw;
-}
-.Month h4 {
-  font-size: 1vw;
-}
- h5 {
-  font-size: .8vw;
-  max-height: 2vw;
-  overflow: hidden;
-}
-
-.percentages {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  margin-bottom: 0.5rem;
-  position: relative;
-  bottom: .5vw;
-}
-
-.progressBorder {
-  height: 10px;
-  background-color: #eee;
-  border-radius: 5px;
-  overflow: hidden;
-  position: relative;
-  bottom: 1.75vw;
-}
-}

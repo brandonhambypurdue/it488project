@@ -15,12 +15,7 @@ export default function GraphDisplay({
 }) {
   // 🔎 Log incoming data for debugging
   useEffect(() => {
-    // console.log("📊 GraphDisplay received:");
-    // console.log("🟦 dailyData:", dailyData);
-    // // console.log("🟩 weekTotals:", weekTotals);
-    // console.log("🟧 monthlyTotals:", monthlyTotals);
-    // console.log("🎯 selectedHabit:", selectedHabit);
-    // console.log("📁 view:", view);
+   
   }, [dailyData, weekTotals, monthlyTotals, selectedHabit, view]);
 
   // 🔹 Shape daily data

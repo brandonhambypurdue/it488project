@@ -31,7 +31,7 @@ export default function ManualGraph({ data, selectedHabit }) {
         style={{ bottom: `${(avg / maxValue) * 74}%` }}
         title={`📊 Weekly Avg: ${avg.toFixed(1)} hrs`}
       >
-        <span className="averageLabel">{avg.toFixed(1)}</span>
+        <span className="averageLabel">Your average {avg.toFixed(1)}</span>
       </div>
 
       <div className="progressBars">

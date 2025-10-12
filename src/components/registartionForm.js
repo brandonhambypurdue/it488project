@@ -27,6 +27,21 @@ export default function RegistrationForm({ onBackToLogin }) {
     }));
   };
 
+const isPasswordComplex = (password) => {
+  const complexityRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=\[\]{}|\\:,.<>?/]).{8,}$/;
+  const sqlUnsafeChars = /['";]/;
+  return complexityRegex.test(password) && !sqlUnsafeChars.test(password);
+};
+
+
+
+ const isUsernameSafe = (username) => {
+  const sqlUnsafeChars = /['";]/;
+  return !sqlUnsafeChars.test(username) && !username.includes('--');
+};
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
@@ -35,7 +50,12 @@ export default function RegistrationForm({ onBackToLogin }) {
     const { first_name, last_name, username, password, confirm, terms } = formData;
 
     if (!terms) return setErrorMsg('Please agree to the Terms to continue.');
-    if (password.length < 8) return setErrorMsg('Password must be at least 8 characters.');
+    if (!isUsernameSafe(username)) return setErrorMsg('Username contains invalid characters.');
+    if (!isPasswordComplex(password)) {
+      return setErrorMsg(
+        'Password must be at least 8 characters and include uppercase, lowercase, number, and special character (excluding SQL-sensitive characters).'
+      );
+    }
     if (password !== confirm) return setErrorMsg('Passwords do not match.');
 
     try {
@@ -50,7 +70,7 @@ export default function RegistrationForm({ onBackToLogin }) {
         throw new Error(data.message || 'Registration failed.');
       }
 
-      setSuccessMsg('Account created! Check your email to verify your address.');
+      setSuccessMsg('Account created! Go ahead and login and start tracking your habits good luck!!!');
       setFormData({
         first_name: '',
         last_name: '',
@@ -68,7 +88,7 @@ export default function RegistrationForm({ onBackToLogin }) {
     <div className="card" role="region" aria-labelledby="title">
       <div className="head">
         <h1 id="title">Create your Habit Tracker account</h1>
-        <p className="lead">Log habits daily, get reminders, and visualize progress.</p>
+        <p className="lead">Log habits daily, and visualize progress!</p>
       </div>
 
       <form className="form" onSubmit={handleSubmit}>
@@ -182,6 +202,7 @@ export default function RegistrationForm({ onBackToLogin }) {
     </div>
   );
 }
+
 
 
 

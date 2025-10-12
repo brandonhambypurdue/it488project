@@ -1,0 +1,70 @@
+.loginBackground {
+  background: radial-gradient(circle at top left, #0a1f3d, #050d1a);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginContainer {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  width: 320px;
+}
+
+.branding .logo {
+  width: 200px;
+  height: 150px;
+  margin-bottom: 10px;
+  background-color: #003f7f08;
+}
+
+.appTitle {
+  color: white;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.tagline {
+  color: #7ec8f2;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.loginForm input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: none;
+  background-color: #1e2a3a;
+  color: white;
+}
+
+.loginForm button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: none;
+  background-color: #0077cc;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.loginForm {
+    color: white;
+}
+
+.toggleBtn {
+  background-color: #003f7f;
+  margin-top: 10px;
+}
+
+.errorText {
+  color: red;
+  margin-top: 10px;
+}
