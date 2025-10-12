@@ -28,19 +28,34 @@ function App() {
     const userObj = { username, password };
     setUser(userObj);
     localStorage.setItem('user', JSON.stringify(userObj));
-    console.log("👤 Logged in user:", userObj);
+   
   };
 
   // Handle logout
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/logout', { method: 'POST', credentials: 'include' });
-    } catch (err) {
-      console.error('Logout error:', err);
-    }
-    localStorage.removeItem('user');
-    setUser(null); // ✅ This now triggers a full re-render
-  };
+const handleLogout = async () => {
+  // Optimistically update UI first
+  localStorage.removeItem('user');
+  setUser(null); // Trigger re-render immediately
+
+  // Then attempt backend logout with timeout protection
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3000); // 3s timeout
+
+    await fetch('/api/logout', {
+      method: 'POST',
+      credentials: 'include',
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeout);
+  } catch (err) {
+    console.warn('Logout request failed or timed out:', err);
+    // Optionally show a toast or log error
+  }
+};
+
+
 
   return (
     <div className="mainPage">

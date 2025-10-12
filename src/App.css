@@ -132,7 +132,7 @@ background-color: #0078d4;
   /****/
 
 
-
+ 
 
 .welcome {
   position: relative;
@@ -200,80 +200,18 @@ background-color: #0078d4;
 
 
 
-.loginWrapper {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f2f5;
-  z-index: 1;
-  filter: none;
-}
 
 
 
-.background {
-  height: 100vh;
-  width: 100vw;
-  background: url(./images/Logo.jpg);
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Segoe UI', sans-serif;
-  z-index: -1;
-  
 
 
-}
 
-/* Center the login form */
-.loginForm {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
-  width: 300px;
-  text-align: center;
-  filter: none;
-  
-}
 
-/* Input styling */
-.loginForm input {
-  width: 100%;
-  padding: 0.75rem;
-  margin: 0.5rem 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
 
-/* Button styling */
-.loginForm button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #0078d4;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-bottom: 2vh;
-}
 
-.loginForm button:hover {
-  background-color: #005ea2;
-}
 
-/* Error message */
-.loginForm p {
-  color: red;
-  margin-top: 0.5rem;
-}
+
+
 @media (max-width: 1920px) {
 .dropbtn {
   text-align: center;
@@ -284,6 +222,7 @@ h1 {
 }
 .welcome {
   width: 25vw;
+  height: 4vw;
   font-size: 2vw;
 
 
@@ -302,12 +241,15 @@ h1 {
   padding-bottom: 5vh;
 }
 .dropdown-content{
-  height: 23.5vw;
+  height: 25vw;
 }
+
+
 }
 @media (max-width:1600px) {
   .welcome {
-  font-size: 2vw;
+  font-size: 1.75vw;
+  height: 2vw;
 }
 .option {
   width: 7vw;
@@ -320,7 +262,7 @@ h1 {
   padding-bottom: 5vh;
 }
 .dropdown-content{
-  height: 23.5vw;
+  height: 24vw;
 }
 }
 @media (max-width :1440px) {
@@ -341,7 +283,7 @@ h1 {
   padding-top: 1vw;
   width: 29vw;
   height: 2.5vw;
-  font-size: 2.25vw;
+  font-size: 2vw;
 }
 
 .mainPage {
@@ -371,23 +313,20 @@ background-color:rgb(0, 154, 238);
 
 }
 
-/* The container <div> - needed to position the dropdown content */
 
-
-
-
-/* Dropdown Content (Hidden by Default) */
 .dropdown-content {
   background-color: #ffffff;
+  height: 24.5vw;
 } 
 
 /* Links inside the dropdown */
 .option {
   color: black;
   width: 7vw;
-  height: 2.8vw;
+  height: 2.25vw;
   font-size: 1vw;
-  padding-bottom: 3vh;
+  padding-bottom: 1vh;
+  padding-top: 0vh;
 }
 
 .option:hover {
@@ -422,7 +361,9 @@ background-color: #0078d4;
 
 }
 @media (max-width: 1150px) {
-  
+  .welcome {
+    height: 1vw;
+  }
 }
 
 @media (max-width : 1024px) {
