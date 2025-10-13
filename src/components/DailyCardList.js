@@ -164,7 +164,7 @@ const handleSubmit = async () => {
 
     // Add offset to get target day
     const targetDate = new Date(monday);
-    targetDate.setDate(monday.getDate() + targetIndex -1);
+    targetDate.setDate(monday.getDate() + targetIndex);
 
     const formattedDate = targetDate.toISOString().split("T")[0]; // "YYYY-MM-DD"
 
@@ -324,6 +324,7 @@ const handleSubmit = async () => {
     </div>
   );
 }
+
 
 
 
