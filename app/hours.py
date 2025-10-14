@@ -17,7 +17,7 @@ def make_day_id(date_input):
     if isinstance(date_input, str):
         date_input = datetime.strptime(date_input, "%Y-%m-%d")
     start = datetime(date_input.year, 1, 1)
-    return (date_input - start).days + 1
+    return (date_input - start).days
 
 @hours_bp.route("/api/hours/input", methods=["POST"])
 def input_hours():
@@ -78,4 +78,5 @@ def input_hours():
     except Exception as e:
         db.session.rollback()
         print("Exception caught:", e)
+
         return jsonify({"error": str(e)}), 500
