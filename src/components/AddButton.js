@@ -43,7 +43,7 @@ export default function AddButton({ onAddHabit }) {
             <div className="group-title">Physical Health habits</div>
             <div className="option" role="menuitem" tabIndex={0} onClick={() => handleAdd('stretching', '🤸 Stretching')}>Stretching</div>
             <div className="option" role="menuitem" tabIndex={0} onClick={() => handleAdd('cardio', '🏃 Cardio')}>Cardio</div>
-            <div className="option" role="menuitem" tabIndex={0} onClick={() => handleAdd('hydration', '💧 Hydration')}>Hydration</div>
+            
           </div>
 
        

@@ -62,7 +62,7 @@
 
 .pw-toggle {
   position: absolute;
-  right: 10px;
+  right: 22px;
   top: 36px;
   font-size: 0.9rem;
   color: #7ec8f2;
@@ -79,7 +79,7 @@
 
 .checkbox label {
   font-size: 0.9rem;
-}
+} 
 
 /* Buttons */
 .actions {
@@ -133,11 +133,11 @@ footer {
 
 .toggleBtn {
   background: none;
-  border: none;
   color: #7ec8f2;
   font-size: 0.9rem;
   cursor: pointer;
   text-decoration: underline;
+  border-radius: 1vw;
 }
 
 #password {
