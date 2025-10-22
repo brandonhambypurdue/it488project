@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Download Routine Machine</title>
+  <style>
+    :root{
+      --bg:#009aee;
+      --card:#ffffff;
+      --accent:#2563eb;
+      --accent-contrast:#fff;
+      --muted:#6b7280;
+      --radius:12px;
+      --shadow:0 8px 24px rgba(0,0,0,0.2);
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      background:var(--bg);
+      color:#0f172a;
+      -webkit-font-smoothing:antialiased;
+    }
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      box-sizing:border-box;
+    }
+    .card{
+      width:100%;
+      max-width:520px;
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:28px;
+      box-sizing:border-box;
+      text-align:center;
+    }
+    h1{
+      margin:0 0 6px 0;
+      font-size:20px;
+    }
+    p.lead{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .file-info{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+    .file-chip{
+      background:#f1f5f9;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:#0f172a;
+    }
+    .actions{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    button.primary{
+      background:var(--accent);
+      color:var(--accent-contrast);
+      border:0;
+      padding:10px 18px;
+      font-size:15px;
+      border-radius:10px;
+      cursor:pointer;
+      box-shadow:0 6px 18px rgba(37,99,235,0.18);
+    }
+    button.primary:active{ transform:translateY(1px); }
+    .progress-wrap{
+      width:100%;
+      margin-top:12px;
+      display:none;
+      flex-direction:column;
+      gap:8px;
+      align-items:center;
+    }
+    .progress{
+      width:100%;
+      height:10px;
+      background:#eef2ff;
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .progress>i{
+      display:block;
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#60a5fa 0%,#2563eb 100%);
+      transition:width 120ms linear;
+    }
+    .progress-label{
+      font-size:13px;
+      color:var(--muted);
+    }
+    .note{
+      margin-top:14px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    @media(max-width:420px){
+      .card{padding:18px;}
+      h1{font-size:18px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="main" aria-labelledby="title">
+      <h1 id="title">Download Routine Machine</h1>
+      <p class="lead">Click the button below to download the installer file.</p>
+
+      <div class="file-info">
+        <div class="file-chip" id="fileName">routine-machine-download.exe</div>
+        <div class="file-chip" id="fileSize">Size: unknown</div>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="downloadBtn">Download</button>
+      </div>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <i id="progressBar"></i>
+        </div>
+        <div class="progress-label" id="progressLabel">Preparing…</div>
+      </div>
+
+      <p class="note">If the download doesn't start automatically, please try again.</p>
+
+      <a id="anchor" href="routine-machine-download.exe" download style="display:none" rel="noopener noreferrer"></a>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const FILE_PATH='routine-machine-download.exe';
+      const FILE_NAME='routine-machine-download.exe';
+
+      const downloadBtn=document.getElementById('downloadBtn');
+      const anchor=document.getElementById('anchor');
+      const progressWrap=document.getElementById('progressWrap');
+      const progressBar=document.getElementById('progressBar');
+      const progressLabel=document.getElementById('progressLabel');
+      const fileNameEl=document.getElementById('fileName');
+      const fileSizeEl=document.getElementById('fileSize');
+
+      fileNameEl.textContent=FILE_NAME;
+      anchor.href=FILE_PATH;
+      anchor.download=FILE_NAME;
+
+      function setProgress(pct,label){
+        progressBar.style.width=pct+'%';
+        progressLabel.textContent=label;
+        progressBar.parentElement.setAttribute('aria-valuenow',String(Math.round(pct)));
+      }
+
+      async function fallbackAnchorClick(){anchor.click();}
+
+      async function downloadWithProgress(url,filename){
+        try{
+          progressWrap.style.display='flex';
+          setProgress(2,'Starting download…');
+          const resp=await fetch(url);
+          if(!resp.ok)throw new Error('Network error '+resp.status);
+
+          const len=resp.headers.get('content-length');
+          if(len)fileSizeEl.textContent='Size: '+Math.round(len/1024)+' KB';
+          const reader=resp.body?.getReader();
+          if(!reader){
+            const blob=await resp.blob();
+            const blobUrl=URL.createObjectURL(blob);
+            const a=document.createElement('a');
+            a.href=blobUrl;
+            a.download=filename;
+            a.click();
+            URL.revokeObjectURL(blobUrl);
+            setProgress(100,'Download complete');
+            setTimeout(()=>progressWrap.style.display='none',1200);
+            return;
+          }
+          let loaded=0;
+          const total=len?Number(len):null;
+          const chunks=[];
+          while(true){
+            const {done,value}=await reader.read();
+            if(done)break;
+            chunks.push(value);
+            loaded+=value.length;
+            if(total){
+              const pct=Math.floor((loaded/total)*100);
+              setProgress(pct,`Downloading: ${pct}%`);
+            }else{
+              setProgress(Math.min(99,loaded/1024),'Downloading…');
+            }
+          }
+          const blob=new Blob(chunks);
+          const blobUrl=URL.createObjectURL(blob);
+          const a=document.createElement('a');
+          a.href=blobUrl;
+          a.download=filename;
+          a.click();
+          URL.revokeObjectURL(blobUrl);
+          setProgress(100,'Download complete');
+          setTimeout(()=>progressWrap.style.display='none',1400);
+        }catch(e){
+          console.error(e);
+          progressLabel.textContent='Download failed — retrying direct link';
+          setTimeout(()=>fallbackAnchorClick(),800);
+        }
+      }
+
+      downloadBtn.addEventListener('click',()=>downloadWithProgress(FILE_PATH,FILE_NAME));
+
+      // Optional: pre-fetch file size
+      (async()=>{
+        try{
+          const h=await fetch(FILE_PATH,{method:'HEAD'});
+          if(h.ok){
+            const l=h.headers.get('content-length');
+            if(l)fileSizeEl.textContent='Size: '+Math.round(l/1024)+' KB';
+          }
+        }catch(e){}
+      })();
+    })();
+  </script>
+</body>
+</html>
