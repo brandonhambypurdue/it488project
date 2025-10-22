@@ -5,6 +5,7 @@ import HabitTracking from './components/habitList.js';
 import Login from './components/loginPop.js';
 import LogoutButton from './components/LogoutButton.js';
 import GraphDisplay from './components/graphDisplay.js';
+import DeleteAccountModal from './components/deleteAccountBtn.js';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -28,34 +29,28 @@ function App() {
     const userObj = { username, password };
     setUser(userObj);
     localStorage.setItem('user', JSON.stringify(userObj));
-   
   };
 
   // Handle logout
-const handleLogout = async () => {
-  // Optimistically update UI first
-  localStorage.removeItem('user');
-  setUser(null); // Trigger re-render immediately
+  const handleLogout = async () => {
+    localStorage.removeItem('user');
+    setUser(null);
 
-  // Then attempt backend logout with timeout protection
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 3000); // 3s timeout
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 3000);
 
-    await fetch('/api/logout', {
-      method: 'POST',
-      credentials: 'include',
-      signal: controller.signal,
-    });
+      await fetch('/api/logout', {
+        method: 'POST',
+        credentials: 'include',
+        signal: controller.signal,
+      });
 
-    clearTimeout(timeout);
-  } catch (err) {
-    console.warn('Logout request failed or timed out:', err);
-    // Optionally show a toast or log error
-  }
-};
-
-
+      clearTimeout(timeout);
+    } catch (err) {
+      console.warn('Logout request failed or timed out:', err);
+    }
+  };
 
   return (
     <div className="mainPage">
@@ -67,8 +62,15 @@ const handleLogout = async () => {
             Good afternoon, <span>{user.username}</span>
           </h1>
 
-          {/* ✅ Always passes fresh reference */}
-          <LogoutButton onLogout={() => handleLogout()} />
+          <LogoutButton onLogout={handleLogout} />
+          <DeleteAccountModal
+            username={user.username}
+            password={user.password}
+            onTriggerLogin={() => {
+              handleLogout(); // clear state
+              // Login modal will auto-show since user becomes null
+            }}
+          />
 
           <CalendarHolder
             user={user}

@@ -30,7 +30,7 @@ export default function CalendarHolder({
   // ✅ Fetch daily habits from API
   const fetchDailyDataChild = async () => {
     try {
-      const res = await fetch(`/api/habits/${user.username}`);
+      const res = await fetch(`http://127.0.0.1:5000/api/habits/${user.username}`);
       const data = await res.json();
       setDailyData(data.habits || []);
     } catch (err) {
@@ -47,7 +47,7 @@ export default function CalendarHolder({
   // ✅ Fetch weekly totals
   useEffect(() => {
     if (view === "weekly" && user?.username) {
-      fetch(`http://localhost:5000/api/weekly?username=${user.username}`)
+      fetch(`http://127.0.0.1:5000/api/weekly?username=${user.username}`)
         .then(res => res.json())
         .then(data => {
           if (data.success && Array.isArray(data.weekly)) {
@@ -62,7 +62,7 @@ export default function CalendarHolder({
   // ✅ Fetch monthly totals
   useEffect(() => {
     if (view === "monthly" && user?.username) {
-      fetch(`http://localhost:5000/api/monthly?username=${user.username}`)
+      fetch(`http://127.0.0.1:5000/api/monthly?username=${user.username}`)
         .then(res => res.json())
         .then(data => {
           if (data.success) {

@@ -1,6 +1,6 @@
 .popup-overlay {
     width: 10vw;
-    height: 11vw;
+    height: 12vw;
     background-color:rgba(0, 155, 238, 0.463);
     position: relative;
     bottom: 35vw;
@@ -41,26 +41,27 @@ make the add habit dropdown function
 make the graphs and info displays function
 */
 
-@media (max-width:1920px) {
+@media (max-width:1660px) {
 
 .popup-overlay
 {
+    height: 13vw;
     font-size: 1vw;
 }
 .inputDayInfo {
-    top: -.5vw;
+    top: .5vw;
     width: 9vw;
 }
 
 .enterInfo-btn{
-    top: -.5vw;
+    top: 1vw;
     width: 9vw;
 }
 
 
 .close-btn{
 width: 9vw;
-top: 8.75vw;
+top: 10vw;
 }
 }
 

@@ -51,10 +51,20 @@ export default function YearlyProgressGraph({ monthlyTotals = {}, selectedHabit 
 function capitalizeFirst(str) {
   return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 }
+function formatHabitLabel(str) {
+  const labelMap = {
+    self_reflection: "Self Reflection",
+    lets_break_a_habit: "Breaking a Habit"
+  };
+
+  if (!str) return "";
+
+  return labelMap[str] || capitalizeFirst(str.replace(/_/g, " "));
+}
 
   return (
     <div className="plotHolder">
-      <h3>Yearly Progress for {capitalizeFirst(selectedHabit)}</h3>
+       <h4>Daily Progress for {formatHabitLabel(selectedHabit)}</h4>
       <svg
         viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="xMidYMid meet"
@@ -92,7 +102,7 @@ function capitalizeFirst(str) {
               <text
                 x={padding - 10}
                 y={y + 4}
-                fontSize="12"
+                fontSize="20"
                 textAnchor="end"
                 fill="#000000ff"
               >
@@ -114,7 +124,7 @@ function capitalizeFirst(str) {
         <text
           x={width - padding + 5}
           y={scaleY(avg) + 4}
-          fontSize="10"
+          fontSize="20"
           fill="orange"
         >
           Avg {avg.toFixed(1)}
@@ -148,7 +158,7 @@ function capitalizeFirst(str) {
             key={`label-${i}`}
             x={p.x}
             y={height - bottomPad + 20}
-            fontSize="18"
+            fontSize="20"
             textAnchor="middle"
           >
             {p.label}
@@ -161,7 +171,7 @@ function capitalizeFirst(str) {
             key={`value-${i}`}
             x={p.x}
             y={p.y - 10}
-            fontSize="14"
+            fontSize="20"
             textAnchor="middle"
             fill="#333"
           >

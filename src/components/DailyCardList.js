@@ -177,7 +177,7 @@ const handleSubmit = async () => {
 
     console.log("Submitting payload:", payload);
 
-    const response = await fetch("/api/hours/input", {
+    const response = await fetch("http://127.0.0.1:5000/api/hours/input", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -324,6 +324,3 @@ const handleSubmit = async () => {
     </div>
   );
 }
-
-
-

@@ -30,11 +30,22 @@ export default function ProgressGraph({ data, selectedHabit }) {
   return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 }
 
+function formatHabitLabel(str) {
+  const labelMap = {
+    self_reflection: "Self Reflection",
+    lets_break_a_habit: "Breaking a Habit"
+  };
+
+  if (!str) return "";
+
+  return labelMap[str] || capitalizeFirst(str.replace(/_/g, " "));
+}
 
 
   return (
     <div className='plotHolder'>
-      <h4>Daily Progress for {capitalizeFirst(selectedHabit)}</h4>
+      <h4>Daily Progress for {formatHabitLabel(selectedHabit)}</h4>
+
 
       {/* 📊 Average Line */}
       <div

@@ -233,7 +233,7 @@ h5 {
   
 }
 }
-@media (max-width:1600px) {
+@media (max-width:1660px) {
 .calendarHolder {
     width: 34.75vw;
     height: 24.5vw;
@@ -320,8 +320,8 @@ position: relative;
   left: .5vw;
   bottom: 3.25vw;
   border-radius: 1vw;
-  max-height: 9vw;
-  height: 9vw;
+  max-height: 10vw;
+  height: 10vw;
   width: 16vw;
   display: flex;
   justify-content: space-between;

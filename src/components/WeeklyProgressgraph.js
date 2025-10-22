@@ -19,11 +19,21 @@ export default function ManualGraph({ data, selectedHabit }) {
   function capitalizeFirst(str) {
   return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 }
+function formatHabitLabel(str) {
+  const labelMap = {
+    self_reflection: "Self Reflection",
+    lets_break_a_habit: "Breaking a Habit"
+  };
+
+  if (!str) return "";
+
+  return labelMap[str] || capitalizeFirst(str.replace(/_/g, " "));
+}
 
 
   return (
     <div className="plotHolder">
-      <h3>{capitalizeFirst(selectedHabit)} Weekly Progress</h3>
+       <h4>Daily Progress for {formatHabitLabel(selectedHabit)}</h4>
 
       {/* 📊 Average Line with Label */}
       <div

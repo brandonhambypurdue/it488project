@@ -156,6 +156,14 @@ footer {
 #password {
   width: 9vw;
 }
+#terms {
+  position: relative;
+  left:80px;
+}
+.checkbox label {
+  position: relative;
+
+}
 }
 
 
@@ -171,6 +179,7 @@ footer {
 #password {
   width: 9vw;
 }
+
 }
 @media (max-width:1024px) {
 /* Background and container */

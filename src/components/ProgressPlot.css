@@ -129,9 +129,17 @@ h3 {
 
 
 }
-@media (max-width : 1600px)  {
+@media (max-width : 1660px)  {
+
+  h3 {
+    position: relative;
+    top: .5vw;
+  }
     .plotHolder {
 
+}
+.averageLabel {
+  font-size: .9vw;
 }
 
 .progressBars {

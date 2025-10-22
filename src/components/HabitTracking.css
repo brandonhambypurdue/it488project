@@ -64,9 +64,19 @@
 @media (max-width:1920px) {
   
 }
+@media (max-width:1660px) {
+  
+.habits {
+    display: flex;
+    flex-direction: column;
+    max-height: 18vw;
+    overflow:scroll;
+    width: auto;
+}
+}
 
-
-@media (max-width :1440px) {
+ 
+@media (max-width :1440px){
 
 h4 {
   font-size: 1.25vw;
