@@ -1,21 +1,25 @@
-# Import the application factory.
+# run.py
 from app import create_app
-
-# Import logger for application event logging.
 from log.log import logger
 
 app = create_app()
 
-# Ensure this block runs only when the script is executed directly.
 if __name__ == "__main__":
-# Wrap the server startup in a try-except to catch any errors.
     try:
-# Start the Flask development server.
-      
-        app.run(debug=True, threaded=False)
-       
+        # IMPORTANT for packaged/Electron use:
+        # - use_reloader=False: avoid spawning a child process that confuses Electron
+        # - host=127.0.0.1: bind to loopback only
+        # - port=5000: match what your frontend expects
+        # - debug=False: stable behavior in production
+        # - threaded=False: simpler lifecycle (set True only if you need it)
+        logger.logDatabaseChange("Starting Flask server (packaged mode)...")
+        app.run(
+            host="127.0.0.1",
+            port=5000,
+            debug=False,
+            use_reloader=False,
+            threaded=False
+        )
         logger.logDatabaseChange("Flask server started successfully")
-# Catch exceptions raised during server startup.
     except Exception as e:
-# Log the error if the Flask server fails to start
         logger.logFlaskError(f"Flask server failed to start: {e}")
